@@ -85,14 +85,16 @@ func edit(w http.ResponseWriter, c *http.Request) {
 		}
 		createtpl.Execute(w, result)
 	} else if c.Method == "POST" {
+		page := new(Page)
+		page.Title = title
+		page.Body = c.FormValue("body")
 		if err == mgo.NotFound {
 			ctx := session.DB(dbname).C("pages")
-			page := new(Page)
-			page.Title = title
-			page.Body = c.FormValue("body")
 			err := ctx.Insert(page)
 			check(err)
 		} else {
+			check(err)
+			err := ctx.Upsert(result, page)
 			check(err)
 		}
 		http.Redirect(w, c, "/view/"+title, 302)
