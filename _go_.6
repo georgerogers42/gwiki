@@ -1,0 +1,1007 @@
+go object linux amd64 release.r60.3 9516
+  exports automatically generated from
+  gwiki.go in package "main"
+
+$$  // exports
+    package main
+	import web "github.com/hoisie/web.go"
+	import runtime "runtime"
+	import mustache "github.com/hoisie/mustache.go"
+	import blackfriday "github.com/russross/blackfriday"
+	import html "html"
+	import os "os"
+	import bson "launchpad.net/gobson/bson"
+	import mgo "launchpad.net/mgo"
+	var "".server string
+	type "os".Error interface { String() string }
+	type "github.com/hoisie/mustache.go".sectionElement struct { name string; inverted bool; startline int; elems *"container/vector".Vector }
+	import vector "container/vector" // indirect
+	type "container/vector".Vector []interface { }
+	func (p *"container/vector".Vector) AppendVector (x *"container/vector".Vector)
+	func (p *"container/vector".Vector) At (i int) interface { }
+	func (p *"container/vector".Vector) Cap () int
+	func (p *"container/vector".Vector) Copy () "container/vector".Vector
+	func (p *"container/vector".Vector) Cut (i int, j int)
+	func (p *"container/vector".Vector) Delete (i int)
+	func (p *"container/vector".Vector) Do (f func(elem interface { }))
+	func (p *"container/vector".Vector) Expand (i int, n int)
+	func (p *"container/vector".Vector) Extend (n int)
+	func (p *"container/vector".Vector) Insert (i int, x interface { })
+	func (p *"container/vector".Vector) InsertVector (i int, x *"container/vector".Vector)
+	func (p *"container/vector".Vector) Last () interface { }
+	func (p *"container/vector".Vector) Len () int
+	func (p *"container/vector".Vector) Less (i int, j int) bool
+	func (p *"container/vector".Vector) Pop () interface { }
+	func (p *"container/vector".Vector) Push (x interface { })
+	func (p *"container/vector".Vector) Resize (length int, capacity int) *"container/vector".Vector
+	func (p *"container/vector".Vector) Set (i int, x interface { })
+	func (p *"container/vector".Vector) Slice (i int, j int) *"container/vector".Vector
+	func (p *"container/vector".Vector) Swap (i int, j int)
+	func (p *"container/vector".Vector) realloc (length int, capacity int) []interface { }
+	import io "io" // indirect
+	type "io".Writer interface { Write(p []uint8) (n int, err "os".Error) }
+	type "github.com/hoisie/mustache.go".Template struct { data string; otag string; ctag string; p int; curline int; dir string; elems *"container/vector".Vector }
+	func (tmpl *"github.com/hoisie/mustache.go".Template) Render (context ...interface { }) string
+	func (tmpl *"github.com/hoisie/mustache.go".Template) parse () "os".Error
+	func (tmpl *"github.com/hoisie/mustache.go".Template) parsePartial (name string) (? *"github.com/hoisie/mustache.go".Template, ? "os".Error)
+	func (tmpl *"github.com/hoisie/mustache.go".Template) parseSection (section *"github.com/hoisie/mustache.go".sectionElement) "os".Error
+	func (tmpl *"github.com/hoisie/mustache.go".Template) readString (s string) (? string, ? "os".Error)
+	func (tmpl *"github.com/hoisie/mustache.go".Template) renderTemplate (contextChain *"container/vector".Vector, buf "io".Writer)
+	var "".viewtpl *"github.com/hoisie/mustache.go".Template
+	var "".viewtplerr "os".Error
+	func "".index () string
+	type "".Page struct { Title string; Body string }
+	func "".check (e "os".Error)
+	func "".view (title string) string
+	var "".createtpl *"github.com/hoisie/mustache.go".Template
+	var "".createtplerr "os".Error
+	type "launchpad.net/mgo".BuildInfo struct { Version string; VersionArray []int :"bson:\"versionArray\""; GitVersion string :"bson:\"gitVersion\""; SysInfo string :"bson:\"sysInfo\""; Bits int; Debug bool; MaxObjectSize int :"bson:\"maxBsonObjectSize\"" }
+	type "launchpad.net/mgo".Index struct { Key []string; Unique bool; DropDups bool; Background bool; Sparse bool; Name string; Bits int; Min int; Max int }
+	type "launchpad.net/mgo".replyFunc func(err "os".Error, reply *"launchpad.net/mgo".replyOp, docNum int, docData []uint8)
+	type "launchpad.net/mgo".replyOp struct { flags uint32; cursorId int64; firstDoc int32; replyDocs int32 }
+	type "launchpad.net/mgo".Iter struct { m "sync".Mutex; gotReply "sync".Cond; session *"launchpad.net/mgo".Session; docData "launchpad.net/mgo".queue; err "os".Error; op "launchpad.net/mgo".getMoreOp; prefetch float64; limit int32; pendingDocs int; docsBeforeMore int; timeout int; timedout bool }
+	func (iter *"launchpad.net/mgo".Iter) All (result interface { }) "os".Error
+	func (iter *"launchpad.net/mgo".Iter) Err () "os".Error
+	func (iter *"launchpad.net/mgo".Iter) For (result interface { }, f func() "os".Error) "os".Error
+	func (iter *"launchpad.net/mgo".Iter) Next (result interface { }) bool
+	func (iter *"launchpad.net/mgo".Iter) Timeout () bool
+	func (iter *"launchpad.net/mgo".Iter) getMore ()
+	func (iter *"launchpad.net/mgo".Iter) replyFunc () "launchpad.net/mgo".replyFunc
+	import sync "sync" // indirect
+	type "sync".Mutex struct { state int32; sema uint32 }
+	func (m *"sync".Mutex) Lock ()
+	func (m *"sync".Mutex) Unlock ()
+	type "sync".Cond struct { L "sync".Locker; m "sync".Mutex; oldWaiters int; oldSema *uint32; newWaiters int; newSema *uint32 }
+	func (c *"sync".Cond) Broadcast ()
+	func (c *"sync".Cond) Signal ()
+	func (c *"sync".Cond) Wait ()
+	type "sync".Locker interface { Lock(); Unlock() }
+	type "launchpad.net/mgo".queue struct { elems []interface { }; nelems int; popi int; pushi int }
+	func (q *"launchpad.net/mgo".queue) Len () int
+	func (q *"launchpad.net/mgo".queue) Pop () interface { }
+	func (q *"launchpad.net/mgo".queue) Push (elem interface { })
+	func (q *"launchpad.net/mgo".queue) expand ()
+	type "launchpad.net/mgo".getMoreOp struct { collection string; limit int32; cursorId int64; replyFunc "launchpad.net/mgo".replyFunc }
+	type "launchpad.net/mgo".MapReduceInfo struct { InputCount int; EmitCount int; OutputCount int; Database string; Collection string; Time int64; VerboseTime *"launchpad.net/mgo".MapReduceTime }
+	type "launchpad.net/mgo".MapReduceTime struct { Total int64; Map int64 :"mapTime"; EmitLoop int64 :"emitLoop" }
+	type "launchpad.net/mgo".MapReduce struct { Map string; Reduce string; Finalize string; Out interface { }; Scope interface { }; Verbose bool }
+	type "launchpad.net/mgo".Change struct { Update interface { }; Upsert bool; Remove bool; New bool }
+	type "launchpad.net/mgo".queryWrapper struct { Query interface { } :"$query"; OrderBy interface { } :"$orderby,omitempty"; Hint interface { } :"$hint,omitempty"; Explain bool :"$explain,omitempty" }
+	type "launchpad.net/mgo".Query struct { m "sync".Mutex; session *"launchpad.net/mgo".Session; ? "launchpad.net/mgo".query }
+	func (q *"launchpad.net/mgo".Query) All (result interface { }) "os".Error
+	func (q *"launchpad.net/mgo".Query) Batch (n int) *"launchpad.net/mgo".Query
+	func (q *"launchpad.net/mgo".Query) Count () (n int, err "os".Error)
+	func (q *"launchpad.net/mgo".Query) Distinct (key string, result interface { }) "os".Error
+	func (q *"launchpad.net/mgo".Query) Explain (result interface { }) "os".Error
+	func (q *"launchpad.net/mgo".Query) For (result interface { }, f func() "os".Error) "os".Error
+	func (q *"launchpad.net/mgo".Query) Hint (indexKey []string) *"launchpad.net/mgo".Query
+	func (q *"launchpad.net/mgo".Query) Iter () *"launchpad.net/mgo".Iter
+	func (q *"launchpad.net/mgo".Query) Limit (n int) *"launchpad.net/mgo".Query
+	func (q *"launchpad.net/mgo".Query) MapReduce (job "launchpad.net/mgo".MapReduce, result interface { }) (info *"launchpad.net/mgo".MapReduceInfo, err "os".Error)
+	func (q *"launchpad.net/mgo".Query) Modify (change "launchpad.net/mgo".Change, result interface { }) "os".Error
+	func (q *"launchpad.net/mgo".Query) One (result interface { }) "os".Error
+	func (q *"launchpad.net/mgo".Query) Prefetch (p float64) *"launchpad.net/mgo".Query
+	func (q *"launchpad.net/mgo".Query) Select (selector interface { }) *"launchpad.net/mgo".Query
+	func (q *"launchpad.net/mgo".Query) Skip (n int) *"launchpad.net/mgo".Query
+	func (q *"launchpad.net/mgo".Query) Sort (order interface { }) *"launchpad.net/mgo".Query
+	func (q *"launchpad.net/mgo".Query) Tail (timeoutSecs int) *"launchpad.net/mgo".Iter
+	func (q *"launchpad.net/mgo".Query) wrap () *"launchpad.net/mgo".queryWrapper
+	type "launchpad.net/mgo".query struct { op "launchpad.net/mgo".queryOp; prefetch float64; limit int32 }
+	type "launchpad.net/mgo".queryOp struct { collection string; query interface { }; skip int32; limit int32; selector interface { }; flags uint32; replyFunc "launchpad.net/mgo".replyFunc }
+	type "launchpad.net/mgo".Collection struct { DB "launchpad.net/mgo".Database; Name string; FullName string }
+	func (c "launchpad.net/mgo".Collection) Count () (n int, err "os".Error)
+	func (c "launchpad.net/mgo".Collection) DropCollection () "os".Error
+	func (c "launchpad.net/mgo".Collection) DropIndex (key []string) "os".Error
+	func (c "launchpad.net/mgo".Collection) EnsureIndex (index "launchpad.net/mgo".Index) "os".Error
+	func (c "launchpad.net/mgo".Collection) EnsureIndexKey (key []string) "os".Error
+	func (c "launchpad.net/mgo".Collection) Find (query interface { }) *"launchpad.net/mgo".Query
+	func (c "launchpad.net/mgo".Collection) Indexes () (indexes []"launchpad.net/mgo".Index, err "os".Error)
+	func (c "launchpad.net/mgo".Collection) Insert (docs ...interface { }) "os".Error
+	func (c "launchpad.net/mgo".Collection) Remove (selector interface { }) "os".Error
+	func (c "launchpad.net/mgo".Collection) RemoveAll (selector interface { }) "os".Error
+	func (c "launchpad.net/mgo".Collection) Update (selector interface { }, change interface { }) "os".Error
+	func (c "launchpad.net/mgo".Collection) UpdateAll (selector interface { }, change interface { }) "os".Error
+	func (c "launchpad.net/mgo".Collection) Upsert (selector interface { }, change interface { }) (id interface { }, err "os".Error)
+	type "launchpad.net/mgo".DBRef struct { C string :"bson:\"$ref\""; ID interface { } :"bson:\"$id\""; DB string :"bson:\"$db,omitempty\"" }
+	type "launchpad.net/mgo".gfsFileMode int
+	type "launchpad.net/mgo".GridFile struct { m "sync".Mutex; c "sync".Cond; gfs "launchpad.net/mgo".GridFS; mode "launchpad.net/mgo".gfsFileMode; err "os".Error; chunk int; offset int64; wpending int; wbuf []uint8; wsum "hash".Hash; rbuf []uint8; rcache *"launchpad.net/mgo".gfsCachedChunk; doc "launchpad.net/mgo".gfsFile }
+	func (file *"launchpad.net/mgo".GridFile) Close () "os".Error
+	func (file *"launchpad.net/mgo".GridFile) ContentType () string
+	func (file *"launchpad.net/mgo".GridFile) GetInfo (result interface { }) "os".Error
+	func (file *"launchpad.net/mgo".GridFile) Id () interface { }
+	func (file *"launchpad.net/mgo".GridFile) MD5 () string
+	func (file *"launchpad.net/mgo".GridFile) Name () string
+	func (file *"launchpad.net/mgo".GridFile) Read (b []uint8) (n int, err "os".Error)
+	func (file *"launchpad.net/mgo".GridFile) Seek (offset int64, whence int) (pos int64, err "os".Error)
+	func (file *"launchpad.net/mgo".GridFile) SetChunkSize (bytes int)
+	func (file *"launchpad.net/mgo".GridFile) SetContentType (ctype string)
+	func (file *"launchpad.net/mgo".GridFile) SetId (id interface { })
+	func (file *"launchpad.net/mgo".GridFile) SetInfo (metadata interface { })
+	func (file *"launchpad.net/mgo".GridFile) SetName (name string)
+	func (file *"launchpad.net/mgo".GridFile) Size () int64
+	func (file *"launchpad.net/mgo".GridFile) UploadDate () int64
+	func (file *"launchpad.net/mgo".GridFile) Write (data []uint8) (n int, err "os".Error)
+	func (file *"launchpad.net/mgo".GridFile) assertMode (mode "launchpad.net/mgo".gfsFileMode)
+	func (file *"launchpad.net/mgo".GridFile) getChunk () (data []uint8, err "os".Error)
+	func (file *"launchpad.net/mgo".GridFile) insertChunk (data []uint8)
+	func (file *"launchpad.net/mgo".GridFile) insertFile ()
+	import hash "hash" // indirect
+	type "hash".Hash interface { Reset(); Size() int; Sum() []uint8; Write(p []uint8) (n int, err "os".Error) }
+	type "launchpad.net/mgo".gfsCachedChunk struct { wait "sync".Mutex; n int; data []uint8; err "os".Error }
+	type "launchpad.net/mgo".gfsFile struct { Id interface { } :"_id"; ChunkSize int :"chunkSize"; UploadDate "launchpad.net/gobson/bson".Timestamp :"uploadDate"; Length int64 :",minsize"; MD5 string; Filename string :",omitempty"; ContentType string :"contentType,omitempty"; Metadata *"launchpad.net/gobson/bson".Raw :",omitempty" }
+	type "launchpad.net/gobson/bson".Timestamp int64
+	type "launchpad.net/gobson/bson".Raw struct { Kind uint8; Data []uint8 }
+	func (raw "launchpad.net/gobson/bson".Raw) Unmarshal (out interface { }) "os".Error
+	type "launchpad.net/mgo".GridFS struct { Files "launchpad.net/mgo".Collection; Chunks "launchpad.net/mgo".Collection }
+	func (gfs "launchpad.net/mgo".GridFS) Create (name string) (file *"launchpad.net/mgo".GridFile, err "os".Error)
+	func (gfs "launchpad.net/mgo".GridFS) Open (name string) (file *"launchpad.net/mgo".GridFile, err "os".Error)
+	func (gfs "launchpad.net/mgo".GridFS) OpenId (id interface { }) (file *"launchpad.net/mgo".GridFile, err "os".Error)
+	func (gfs "launchpad.net/mgo".GridFS) Remove (name string) "os".Error
+	func (gfs "launchpad.net/mgo".GridFS) RemoveId (id interface { }) "os".Error
+	func (gfs "launchpad.net/mgo".GridFS) newFile () *"launchpad.net/mgo".GridFile
+	type "launchpad.net/mgo".Database struct { Session *"launchpad.net/mgo".Session; Name string }
+	func (db "launchpad.net/mgo".Database) AddUser (user string, pass string, readOnly bool) "os".Error
+	func (db "launchpad.net/mgo".Database) C (name string) "launchpad.net/mgo".Collection
+	func (db "launchpad.net/mgo".Database) CollectionNames () (names []string, err "os".Error)
+	func (db "launchpad.net/mgo".Database) DropDatabase () "os".Error
+	func (db "launchpad.net/mgo".Database) FindRef (ref "launchpad.net/mgo".DBRef, result interface { }) "os".Error
+	func (db "launchpad.net/mgo".Database) GridFS (prefix string) *"launchpad.net/mgo".GridFS
+	func (db "launchpad.net/mgo".Database) Login (user string, pass string) "os".Error
+	func (db "launchpad.net/mgo".Database) Logout ()
+	func (db "launchpad.net/mgo".Database) RemoveUser (user string) "os".Error
+	func (db "launchpad.net/mgo".Database) Run (cmd interface { }, result interface { }) "os".Error
+	type "launchpad.net/mgo".Safe struct { W int; WMode string; WTimeout int; FSync bool; J bool }
+	type "launchpad.net/mgo".mode int
+	type "launchpad.net/mgo".mongoServer struct { ? "sync".RWMutex; Addr string; ResolvedAddr string; tcpaddr *"net".TCPAddr; sockets []*"launchpad.net/mgo".mongoSocket; closed bool; master bool }
+	func (server *"launchpad.net/mgo".mongoServer) AcquireSocket () (socket *"launchpad.net/mgo".mongoSocket, err "os".Error)
+	func (server *"launchpad.net/mgo".mongoServer) Close ()
+	func (server *"launchpad.net/mgo".mongoServer) Connect () (? *"launchpad.net/mgo".mongoSocket, ? "os".Error)
+	func (server *"launchpad.net/mgo".mongoServer) IsMaster () bool
+	func (server *"launchpad.net/mgo".mongoServer) Merge (other *"launchpad.net/mgo".mongoServer)
+	func (server *"launchpad.net/mgo".mongoServer) RecycleSocket (socket *"launchpad.net/mgo".mongoSocket)
+	func (server *"launchpad.net/mgo".mongoServer) SetMaster (isMaster bool)
+	type "sync".RWMutex struct { w "sync".Mutex; writerSem uint32; readerSem uint32; readerCount int32; readerWait int32 }
+	func (rw *"sync".RWMutex) Lock ()
+	func (rw *"sync".RWMutex) RLock ()
+	func (rw *"sync".RWMutex) RLocker () "sync".Locker
+	func (rw *"sync".RWMutex) RUnlock ()
+	func (rw *"sync".RWMutex) Unlock ()
+	import net "net" // indirect
+	import syscall "syscall" // indirect
+	type "syscall".Sockaddr interface { "syscall".sockaddr() (ptr uintptr, len "syscall"._Socklen, errno int) }
+	type "syscall"._Socklen uint32
+	type "net".sockaddr interface { Network() string; String() string; "net".family() int; "net".sockaddr(family int) (? "syscall".Sockaddr, ? "os".Error) }
+	type "net".TCPAddr struct { IP "net".IP; Port int }
+	func (a *"net".TCPAddr) Network () string
+	func (a *"net".TCPAddr) String () string
+	func (a *"net".TCPAddr) family () int
+	func (a *"net".TCPAddr) sockaddr (family int) (? "syscall".Sockaddr, ? "os".Error)
+	func (a *"net".TCPAddr) toAddr () "net".sockaddr
+	type "net".IPMask []uint8
+	func (mask "net".IPMask) String () string
+	type "net".IP []uint8
+	func (ip "net".IP) DefaultMask () "net".IPMask
+	func (ip "net".IP) Equal (x "net".IP) bool
+	func (ip "net".IP) IsGlobalUnicast () bool
+	func (ip "net".IP) IsInterfaceLocalMulticast () bool
+	func (ip "net".IP) IsLinkLocalMulticast () bool
+	func (ip "net".IP) IsLinkLocalUnicast () bool
+	func (ip "net".IP) IsLoopback () bool
+	func (ip "net".IP) IsMulticast () bool
+	func (ip "net".IP) IsUnspecified () bool
+	func (ip "net".IP) Mask (mask "net".IPMask) "net".IP
+	func (ip "net".IP) String () string
+	func (ip "net".IP) To16 () "net".IP
+	func (ip "net".IP) To4 () "net".IP
+	type "launchpad.net/mgo".authInfo struct { db string; user string; pass string }
+	type "launchpad.net/mgo".mongoSocket struct { ? "sync".Mutex; server *"launchpad.net/mgo".mongoServer; conn *"net".TCPConn; addr string; nextRequestId uint32; replyFuncs map[uint32] "launchpad.net/mgo".replyFunc; references int; auth []"launchpad.net/mgo".authInfo; logout []"launchpad.net/mgo".authInfo; cachedNonce string; gotNonce "sync".Cond; dead "os".Error }
+	func (socket *"launchpad.net/mgo".mongoSocket) Acquire () bool
+	func (socket *"launchpad.net/mgo".mongoSocket) Acquired (server *"launchpad.net/mgo".mongoServer) "os".Error
+	func (socket *"launchpad.net/mgo".mongoSocket) Close ()
+	func (socket *"launchpad.net/mgo".mongoSocket) Login (db string, user string, pass string) "os".Error
+	func (socket *"launchpad.net/mgo".mongoSocket) Logout (db string)
+	func (socket *"launchpad.net/mgo".mongoSocket) LogoutAll ()
+	func (socket *"launchpad.net/mgo".mongoSocket) Query (ops ...interface { }) "os".Error
+	func (socket *"launchpad.net/mgo".mongoSocket) Release ()
+	func (socket *"launchpad.net/mgo".mongoSocket) SimpleQuery (op *"launchpad.net/mgo".queryOp) (data []uint8, err "os".Error)
+	func (socket *"launchpad.net/mgo".mongoSocket) dropAuth (db string) (auth "launchpad.net/mgo".authInfo, found bool)
+	func (socket *"launchpad.net/mgo".mongoSocket) dropLogout (db string, user string, pass string) (auth "launchpad.net/mgo".authInfo, found bool)
+	func (socket *"launchpad.net/mgo".mongoSocket) flushLogout () []interface { }
+	func (socket *"launchpad.net/mgo".mongoSocket) getNonce () (nonce string, err "os".Error)
+	func (socket *"launchpad.net/mgo".mongoSocket) kill (err "os".Error)
+	func (socket *"launchpad.net/mgo".mongoSocket) readLoop ()
+	func (socket *"launchpad.net/mgo".mongoSocket) resetNonce ()
+	type "os".FileInfo struct { Dev uint64; Ino uint64; Nlink uint64; Mode uint32; Uid int; Gid int; Rdev uint64; Size int64; Blksize int64; Blocks int64; Atime_ns int64; Mtime_ns int64; Ctime_ns int64; Name string; FollowedSymlink bool }
+	func (f *"os".FileInfo) IsBlock () bool
+	func (f *"os".FileInfo) IsChar () bool
+	func (f *"os".FileInfo) IsDirectory () bool
+	func (f *"os".FileInfo) IsFifo () bool
+	func (f *"os".FileInfo) IsRegular () bool
+	func (f *"os".FileInfo) IsSocket () bool
+	func (f *"os".FileInfo) IsSymlink () bool
+	func (f *"os".FileInfo) Permission () uint32
+	type "os".File struct { fd int; name string; dirinfo *"os".dirInfo; nepipe int }
+	func (f *"os".File) Chdir () "os".Error
+	func (f *"os".File) Chmod (mode uint32) "os".Error
+	func (f *"os".File) Chown (uid int, gid int) "os".Error
+	func (file *"os".File) Close () "os".Error
+	func (file *"os".File) Fd () int
+	func (file *"os".File) Name () string
+	func (file *"os".File) Read (b []uint8) (n int, err "os".Error)
+	func (file *"os".File) ReadAt (b []uint8, off int64) (n int, err "os".Error)
+	func (file *"os".File) Readdir (n int) (fi []"os".FileInfo, err "os".Error)
+	func (f *"os".File) Readdirnames (n int) (names []string, err "os".Error)
+	func (file *"os".File) Seek (offset int64, whence int) (ret int64, err "os".Error)
+	func (file *"os".File) Stat () (fi *"os".FileInfo, err "os".Error)
+	func (file *"os".File) Sync () "os".Error
+	func (f *"os".File) Truncate (size int64) "os".Error
+	func (file *"os".File) Write (b []uint8) (n int, err "os".Error)
+	func (file *"os".File) WriteAt (b []uint8, off int64) (n int, err "os".Error)
+	func (file *"os".File) WriteString (s string) (ret int, err "os".Error)
+	func (f *"os".File) pread (b []uint8, off int64) (n int, err int)
+	func (f *"os".File) pwrite (b []uint8, off int64) (n int, err int)
+	func (f *"os".File) read (b []uint8) (n int, err int)
+	func (f *"os".File) seek (offset int64, whence int) (ret int64, err int)
+	func (f *"os".File) write (b []uint8) (n int, err int)
+	type "os".dirInfo struct { buf []uint8; nbuf int; bufp int }
+	type "net".Addr interface { Network() string; String() string }
+	type "io".Reader interface { Read(p []uint8) (n int, err "os".Error) }
+	type "net".TCPConn struct { fd *"net".netFD }
+	func (c *"net".TCPConn) Close () "os".Error
+	func (c *"net".TCPConn) File () (f *"os".File, err "os".Error)
+	func (c *"net".TCPConn) LocalAddr () "net".Addr
+	func (c *"net".TCPConn) Read (b []uint8) (n int, err "os".Error)
+	func (c *"net".TCPConn) ReadFrom (r "io".Reader) (? int64, ? "os".Error)
+	func (c *"net".TCPConn) RemoteAddr () "net".Addr
+	func (c *"net".TCPConn) SetKeepAlive (keepalive bool) "os".Error
+	func (c *"net".TCPConn) SetLinger (sec int) "os".Error
+	func (c *"net".TCPConn) SetNoDelay (noDelay bool) "os".Error
+	func (c *"net".TCPConn) SetReadBuffer (bytes int) "os".Error
+	func (c *"net".TCPConn) SetReadTimeout (nsec int64) "os".Error
+	func (c *"net".TCPConn) SetTimeout (nsec int64) "os".Error
+	func (c *"net".TCPConn) SetWriteBuffer (bytes int) "os".Error
+	func (c *"net".TCPConn) SetWriteTimeout (nsec int64) "os".Error
+	func (c *"net".TCPConn) Write (b []uint8) (n int, err "os".Error)
+	func (c *"net".TCPConn) ok () bool
+	type "net".netFD struct { sysmu "sync".Mutex; sysref int; closing bool; sysfd int; family int; proto int; sysfile *"os".File; cr chan bool; cw chan bool; net string; laddr "net".Addr; raddr "net".Addr; rdeadline_delta int64; rdeadline int64; rio "sync".Mutex; wdeadline_delta int64; wdeadline int64; wio "sync".Mutex; ncr int; ncw int }
+	func (fd *"net".netFD) Close () "os".Error
+	func (fd *"net".netFD) Read (p []uint8) (n int, err "os".Error)
+	func (fd *"net".netFD) ReadFrom (p []uint8) (n int, sa "syscall".Sockaddr, err "os".Error)
+	func (fd *"net".netFD) ReadMsg (p []uint8, oob []uint8) (n int, oobn int, flags int, sa "syscall".Sockaddr, err "os".Error)
+	func (fd *"net".netFD) Write (p []uint8) (n int, err "os".Error)
+	func (fd *"net".netFD) WriteMsg (p []uint8, oob []uint8, sa "syscall".Sockaddr) (n int, oobn int, err "os".Error)
+	func (fd *"net".netFD) WriteTo (p []uint8, sa "syscall".Sockaddr) (n int, err "os".Error)
+	func (fd *"net".netFD) accept (toAddr func(? "syscall".Sockaddr) "net".Addr) (nfd *"net".netFD, err "os".Error)
+	func (fd *"net".netFD) connect (ra "syscall".Sockaddr) "os".Error
+	func (fd *"net".netFD) decref ()
+	func (fd *"net".netFD) dup () (f *"os".File, err "os".Error)
+	func (fd *"net".netFD) incref ()
+	func (fd *"net".netFD) setAddr (laddr "net".Addr, raddr "net".Addr)
+	type "launchpad.net/mgo".mongoCluster struct { ? "sync".RWMutex; serverSynced "sync".Cond; userSeeds []string; dynaSeeds []string; servers "launchpad.net/mgo".mongoServers; masters "launchpad.net/mgo".mongoServers; slaves "launchpad.net/mgo".mongoServers; references int; syncing bool; direct bool; cachedIndex map[string] bool }
+	func (cluster *"launchpad.net/mgo".mongoCluster) Acquire ()
+	func (cluster *"launchpad.net/mgo".mongoCluster) AcquireSocket (slaveOk bool, syncTimeout int64) (s *"launchpad.net/mgo".mongoSocket, err "os".Error)
+	func (cluster *"launchpad.net/mgo".mongoCluster) CacheIndex (cacheKey string, exists bool)
+	func (cluster *"launchpad.net/mgo".mongoCluster) HasCachedIndex (cacheKey string) bool
+	func (cluster *"launchpad.net/mgo".mongoCluster) LiveServers () []string
+	func (cluster *"launchpad.net/mgo".mongoCluster) Release ()
+	func (cluster *"launchpad.net/mgo".mongoCluster) ResetIndexCache ()
+	func (cluster *"launchpad.net/mgo".mongoCluster) getKnownAddrs () []string
+	func (cluster *"launchpad.net/mgo".mongoCluster) mergeServer (server *"launchpad.net/mgo".mongoServer)
+	func (cluster *"launchpad.net/mgo".mongoCluster) removeServer (server *"launchpad.net/mgo".mongoServer)
+	func (cluster *"launchpad.net/mgo".mongoCluster) syncServer (server *"launchpad.net/mgo".mongoServer) (hosts []string, err "os".Error)
+	func (cluster *"launchpad.net/mgo".mongoCluster) syncServers ()
+	type "launchpad.net/mgo".mongoServers struct { slice "launchpad.net/mgo".mongoServerSlice }
+	func (servers *"launchpad.net/mgo".mongoServers) Add (server *"launchpad.net/mgo".mongoServer)
+	func (servers *"launchpad.net/mgo".mongoServers) Empty () bool
+	func (servers *"launchpad.net/mgo".mongoServers) Get (i int) *"launchpad.net/mgo".mongoServer
+	func (servers *"launchpad.net/mgo".mongoServers) Len () int
+	func (servers *"launchpad.net/mgo".mongoServers) Remove (other *"launchpad.net/mgo".mongoServer) bool
+	func (servers *"launchpad.net/mgo".mongoServers) Search (other *"launchpad.net/mgo".mongoServer) *"launchpad.net/mgo".mongoServer
+	func (servers *"launchpad.net/mgo".mongoServers) Slice () []*"launchpad.net/mgo".mongoServer
+	type "launchpad.net/mgo".mongoServerSlice []*"launchpad.net/mgo".mongoServer
+	func (s "launchpad.net/mgo".mongoServerSlice) Len () int
+	func (s "launchpad.net/mgo".mongoServerSlice) Less (i int, j int) bool
+	func (s "launchpad.net/mgo".mongoServerSlice) Search (other *"launchpad.net/mgo".mongoServer) (i int, ok bool)
+	func (s "launchpad.net/mgo".mongoServerSlice) Sort ()
+	func (s "launchpad.net/mgo".mongoServerSlice) Swap (i int, j int)
+	type "launchpad.net/mgo".LastError struct { Err string; Code int; N int; Waited int; FSyncFiles int :"fsyncFiles"; WTimeout bool; Updated bool :"updatedExisting"; UpsertedId interface { } :"upserted" }
+	func (err *"launchpad.net/mgo".LastError) String () string
+	type "launchpad.net/mgo".Session struct { m "sync".RWMutex; cluster_ *"launchpad.net/mgo".mongoCluster; socket *"launchpad.net/mgo".mongoSocket; socketIsMaster bool; slaveOk bool; consistency "launchpad.net/mgo".mode; queryConfig "launchpad.net/mgo".query; safeOp *"launchpad.net/mgo".queryOp; syncTimeout int64; urlauth *"launchpad.net/mgo".authInfo; auth []"launchpad.net/mgo".authInfo }
+	func (s *"launchpad.net/mgo".Session) BuildInfo () (info "launchpad.net/mgo".BuildInfo, err "os".Error)
+	func (s *"launchpad.net/mgo".Session) Clone () *"launchpad.net/mgo".Session
+	func (s *"launchpad.net/mgo".Session) Close ()
+	func (s *"launchpad.net/mgo".Session) Copy () *"launchpad.net/mgo".Session
+	func (s *"launchpad.net/mgo".Session) DB (name string) "launchpad.net/mgo".Database
+	func (s *"launchpad.net/mgo".Session) DatabaseNames () (names []string, err "os".Error)
+	func (s *"launchpad.net/mgo".Session) EnsureSafe (safe *"launchpad.net/mgo".Safe)
+	func (s *"launchpad.net/mgo".Session) FindRef (ref "launchpad.net/mgo".DBRef, result interface { }) "os".Error
+	func (s *"launchpad.net/mgo".Session) LiveServers () []string
+	func (s *"launchpad.net/mgo".Session) LogoutAll ()
+	func (s *"launchpad.net/mgo".Session) Mode () "launchpad.net/mgo".mode
+	func (s *"launchpad.net/mgo".Session) New () *"launchpad.net/mgo".Session
+	func (s *"launchpad.net/mgo".Session) Ping () "os".Error
+	func (s *"launchpad.net/mgo".Session) Refresh ()
+	func (s *"launchpad.net/mgo".Session) ResetIndexCache ()
+	func (s *"launchpad.net/mgo".Session) Run (cmd interface { }, result interface { }) "os".Error
+	func (s *"launchpad.net/mgo".Session) Safe () *"launchpad.net/mgo".Safe
+	func (s *"launchpad.net/mgo".Session) SetBatch (n int)
+	func (s *"launchpad.net/mgo".Session) SetMode (consistency "launchpad.net/mgo".mode, refresh bool)
+	func (s *"launchpad.net/mgo".Session) SetPrefetch (p float64)
+	func (s *"launchpad.net/mgo".Session) SetSafe (safe *"launchpad.net/mgo".Safe)
+	func (s *"launchpad.net/mgo".Session) SetSyncTimeout (nsec int64)
+	func (s *"launchpad.net/mgo".Session) acquireSocket (slaveOk bool) (? *"launchpad.net/mgo".mongoSocket, ? "os".Error)
+	func (s *"launchpad.net/mgo".Session) cluster () *"launchpad.net/mgo".mongoCluster
+	func (s *"launchpad.net/mgo".Session) ensureSafe (safe *"launchpad.net/mgo".Safe)
+	func (s *"launchpad.net/mgo".Session) setSocket (socket *"launchpad.net/mgo".mongoSocket)
+	func (s *"launchpad.net/mgo".Session) slaveOkFlag () uint32
+	func (s *"launchpad.net/mgo".Session) writeQuery (op interface { }) (lerr *"launchpad.net/mgo".LastError, err "os".Error)
+	func "".getPage (session *"launchpad.net/mgo".Session, title string) (result *"".Page, err "os".Error)
+	func "".edit (title string) string
+	type "github.com/hoisie/web.go".Context struct { ? *"github.com/hoisie/web.go".Request; ? *"github.com/hoisie/web.go".Server; ? "github.com/hoisie/web.go".conn; responseStarted bool }
+	func (ctx *"github.com/hoisie/web.go".Context) Abort (status int, body string)
+	func (ctx *"github.com/hoisie/web.go".Context) ContentType (ext string)
+	func (ctx *"github.com/hoisie/web.go".Context) GetSecureCookie (name string) (? string, ? bool)
+	func (ctx *"github.com/hoisie/web.go".Context) NotFound (message string)
+	func (ctx *"github.com/hoisie/web.go".Context) NotModified ()
+	func (ctx *"github.com/hoisie/web.go".Context) Redirect (status int, url_ string)
+	func (ctx *"github.com/hoisie/web.go".Context) SetCookie (name string, value string, age int64)
+	func (ctx *"github.com/hoisie/web.go".Context) SetSecureCookie (name string, val string, age int64)
+	func (ctx *"github.com/hoisie/web.go".Context) StartResponse (status int)
+	func (ctx *"github.com/hoisie/web.go".Context) Write (data []uint8) (n int, err "os".Error)
+	func (ctx *"github.com/hoisie/web.go".Context) WriteString (content string)
+	import reflect "reflect" // indirect
+	type "reflect".Kind uint8
+	func (k "reflect".Kind) String () string
+	type "reflect".Type interface { Align() int; AssignableTo(u "reflect".Type) bool; Bits() int; ChanDir() "reflect".ChanDir; Elem() "reflect".Type; Field(i int) "reflect".StructField; FieldAlign() int; FieldByIndex(index []int) "reflect".StructField; FieldByName(name string) (? "reflect".StructField, ? bool); FieldByNameFunc(match func(? string) bool) (? "reflect".StructField, ? bool); Implements(u "reflect".Type) bool; In(i int) "reflect".Type; IsVariadic() bool; Key() "reflect".Type; Kind() "reflect".Kind; Len() int; Method(? int) "reflect".Method; MethodByName(? string) (? "reflect".Method, ? bool); Name() string; NumField() int; NumIn() int; NumMethod() int; NumOut() int; Out(i int) "reflect".Type; PkgPath() string; Size() uintptr; String() string; "reflect".common() *"reflect".commonType; "reflect".runtimeType() *"runtime".Type; "reflect".uncommon() *"reflect".uncommonType }
+	type "reflect".ChanDir int
+	func (d "reflect".ChanDir) String () string
+	type "reflect".StructField struct { PkgPath string; Name string; Type "reflect".Type; Tag "reflect".StructTag; Offset uintptr; Index []int; Anonymous bool }
+	type "reflect".StructTag string
+	func (tag "reflect".StructTag) Get (key string) string
+	type "reflect".Method struct { PkgPath string; Name string; Type "reflect".Type; Func "reflect".Value; Index int }
+	type "runtime".Type interface { }
+	type "reflect".commonType struct { size uintptr; hash uint32; alg uint8; align uint8; fieldAlign uint8; kind uint8; string *string; ? *"reflect".uncommonType; ptrToThis *"runtime".Type }
+	func (t *"reflect".commonType) Align () int
+	func (t *"reflect".commonType) AssignableTo (u "reflect".Type) bool
+	func (t *"reflect".commonType) Bits () int
+	func (t *"reflect".commonType) ChanDir () "reflect".ChanDir
+	func (t *"reflect".commonType) Elem () "reflect".Type
+	func (t *"reflect".commonType) Field (i int) "reflect".StructField
+	func (t *"reflect".commonType) FieldAlign () int
+	func (t *"reflect".commonType) FieldByIndex (index []int) "reflect".StructField
+	func (t *"reflect".commonType) FieldByName (name string) (? "reflect".StructField, ? bool)
+	func (t *"reflect".commonType) FieldByNameFunc (match func(? string) bool) (? "reflect".StructField, ? bool)
+	func (t *"reflect".commonType) Implements (u "reflect".Type) bool
+	func (t *"reflect".commonType) In (i int) "reflect".Type
+	func (t *"reflect".commonType) IsVariadic () bool
+	func (t *"reflect".commonType) Key () "reflect".Type
+	func (t *"reflect".commonType) Kind () "reflect".Kind
+	func (t *"reflect".commonType) Len () int
+	func (t *"reflect".commonType) Method (i int) "reflect".Method
+	func (t *"reflect".commonType) MethodByName (name string) (m "reflect".Method, ok bool)
+	func (t *"reflect".commonType) Name () string
+	func (t *"reflect".commonType) NumField () int
+	func (t *"reflect".commonType) NumIn () int
+	func (t *"reflect".commonType) NumMethod () int
+	func (t *"reflect".commonType) NumOut () int
+	func (t *"reflect".commonType) Out (i int) "reflect".Type
+	func (t *"reflect".commonType) PkgPath () string
+	func (t *"reflect".commonType) Size () uintptr
+	func (t *"reflect".commonType) String () string
+	func (t *"reflect".commonType) common () *"reflect".commonType
+	func (t *"reflect".commonType) runtimeType () *"runtime".Type
+	func (t *"reflect".commonType) toType () "reflect".Type
+	type "reflect".uncommonType struct { name *string; pkgPath *string; methods []"reflect".method }
+	func (t *"reflect".uncommonType) Method (i int) "reflect".Method
+	func (t *"reflect".uncommonType) MethodByName (name string) (m "reflect".Method, ok bool)
+	func (t *"reflect".uncommonType) Name () string
+	func (t *"reflect".uncommonType) NumMethod () int
+	func (t *"reflect".uncommonType) PkgPath () string
+	func (t *"reflect".uncommonType) uncommon () *"reflect".uncommonType
+	type "reflect".method struct { name *string; pkgPath *string; mtyp *"runtime".Type; typ *"runtime".Type; ifn "unsafe".Pointer; tfn "unsafe".Pointer }
+	type "reflect".internalValue struct { typ *"reflect".commonType; kind "reflect".Kind; flag uint32; word "reflect".iword; addr "unsafe".Pointer; rcvr "reflect".iword; method bool; nilmethod bool }
+	func (iv "reflect".internalValue) Elem () "reflect".Value
+	func (iv "reflect".internalValue) IsNil () bool
+	func (iv "reflect".internalValue) call (method string, in []"reflect".Value) []"reflect".Value
+	func (iv "reflect".internalValue) mustBe (want "reflect".Kind)
+	func (iv "reflect".internalValue) mustBeAssignable ()
+	func (iv "reflect".internalValue) mustBeExported ()
+	func (iv "reflect".internalValue) recv (nb bool) (val "reflect".Value, ok bool)
+	func (iv "reflect".internalValue) send (x "reflect".Value, nb bool) bool
+	func (iv "reflect".internalValue) valueInterface (safe bool) interface { }
+	type "reflect".iword uintptr
+	type "reflect".Value struct { Internal interface { }; InternalMethod int }
+	func (v "reflect".Value) Addr () "reflect".Value
+	func (v "reflect".Value) Bool () bool
+	func (v "reflect".Value) Call (in []"reflect".Value) []"reflect".Value
+	func (v "reflect".Value) CallSlice (in []"reflect".Value) []"reflect".Value
+	func (v "reflect".Value) CanAddr () bool
+	func (v "reflect".Value) CanInterface () bool
+	func (v "reflect".Value) CanSet () bool
+	func (v "reflect".Value) Cap () int
+	func (v "reflect".Value) Close ()
+	func (v "reflect".Value) Complex () complex128
+	func (v "reflect".Value) Elem () "reflect".Value
+	func (v "reflect".Value) Field (i int) "reflect".Value
+	func (v "reflect".Value) FieldByIndex (index []int) "reflect".Value
+	func (v "reflect".Value) FieldByName (name string) "reflect".Value
+	func (v "reflect".Value) FieldByNameFunc (match func(? string) bool) "reflect".Value
+	func (v "reflect".Value) Float () float64
+	func (v "reflect".Value) Index (i int) "reflect".Value
+	func (v "reflect".Value) Int () int64
+	func (v "reflect".Value) Interface () interface { }
+	func (v "reflect".Value) InterfaceData () [2]uintptr
+	func (v "reflect".Value) IsNil () bool
+	func (v "reflect".Value) IsValid () bool
+	func (v "reflect".Value) Kind () "reflect".Kind
+	func (v "reflect".Value) Len () int
+	func (v "reflect".Value) MapIndex (key "reflect".Value) "reflect".Value
+	func (v "reflect".Value) MapKeys () []"reflect".Value
+	func (v "reflect".Value) Method (i int) "reflect".Value
+	func (v "reflect".Value) MethodByName (name string) "reflect".Value
+	func (v "reflect".Value) NumField () int
+	func (v "reflect".Value) NumMethod () int
+	func (v "reflect".Value) OverflowComplex (x complex128) bool
+	func (v "reflect".Value) OverflowFloat (x float64) bool
+	func (v "reflect".Value) OverflowInt (x int64) bool
+	func (v "reflect".Value) OverflowUint (x uint64) bool
+	func (v "reflect".Value) Pointer () uintptr
+	func (v "reflect".Value) Recv () (x "reflect".Value, ok bool)
+	func (v "reflect".Value) Send (x "reflect".Value)
+	func (v "reflect".Value) Set (x "reflect".Value)
+	func (v "reflect".Value) SetBool (x bool)
+	func (v "reflect".Value) SetComplex (x complex128)
+	func (v "reflect".Value) SetFloat (x float64)
+	func (v "reflect".Value) SetInt (x int64)
+	func (v "reflect".Value) SetLen (n int)
+	func (v "reflect".Value) SetMapIndex (key "reflect".Value, val "reflect".Value)
+	func (v "reflect".Value) SetPointer (x "unsafe".Pointer)
+	func (v "reflect".Value) SetString (x string)
+	func (v "reflect".Value) SetUint (x uint64)
+	func (v "reflect".Value) Slice (beg int, end int) "reflect".Value
+	func (v "reflect".Value) String () string
+	func (v "reflect".Value) TryRecv () (x "reflect".Value, ok bool)
+	func (v "reflect".Value) TrySend (x "reflect".Value) bool
+	func (v "reflect".Value) Type () "reflect".Type
+	func (v "reflect".Value) Uint () uint64
+	func (v "reflect".Value) UnsafeAddr () uintptr
+	func (v "reflect".Value) internal () "reflect".internalValue
+	type "github.com/hoisie/web.go".Request struct { Method string; RawURL string; URL *"url".URL; Proto string; ProtoMajor int; ProtoMinor int; Headers "http".Header; Body "io".Reader; Close bool; Host string; Referer string; UserAgent string; FullParams map[string] []string; Params map[string] string; ParamData []uint8; Cookies map[string] string; Cookie []*"http".Cookie; Files map[string] "github.com/hoisie/web.go".filedata; RemoteAddr string; RemotePort int }
+	func (r *"github.com/hoisie/web.go".Request) HasFile (name string) bool
+	func (r *"github.com/hoisie/web.go".Request) UnmarshalParams (val interface { }) "os".Error
+	func (r *"github.com/hoisie/web.go".Request) parseParams () "os".Error
+	func (r *"github.com/hoisie/web.go".Request) writeToContainer (val "reflect".Value) "os".Error
+	import url "url" // indirect
+	type "url".Values map[string] []string
+	func (v "url".Values) Add (key string, value string)
+	func (v "url".Values) Del (key string)
+	func (v "url".Values) Encode () string
+	func (v "url".Values) Get (key string) string
+	func (v "url".Values) Set (key string, value string)
+	type "url".URL struct { Raw string; Scheme string; RawAuthority string; RawUserinfo string; Host string; RawPath string; Path string; OpaquePath bool; RawQuery string; Fragment string }
+	func (u *"url".URL) EncodedPath () string
+	func (url *"url".URL) IsAbs () bool
+	func (base *"url".URL) Parse (ref string) (? *"url".URL, ? "os".Error)
+	func (u *"url".URL) Query () "url".Values
+	func (base *"url".URL) ResolveReference (ref *"url".URL) *"url".URL
+	func (url *"url".URL) String () string
+	import http "http" // indirect
+	type "http".Header map[string] []string
+	func (h "http".Header) Add (key string, value string)
+	func (h "http".Header) Del (key string)
+	func (h "http".Header) Get (key string) string
+	func (h "http".Header) Set (key string, value string)
+	func (h "http".Header) Write (w "io".Writer) "os".Error
+	func (h "http".Header) WriteSubset (w "io".Writer, exclude map[string] bool) "os".Error
+	type "http".Cookie struct { Name string; Value string; Path string; Domain string; Expires "time".Time; RawExpires string; MaxAge int; Secure bool; HttpOnly bool; Raw string; Unparsed []string }
+	func (c *"http".Cookie) String () string
+	import time "time" // indirect
+	type "time".Time struct { Year int64; Month int; Day int; Hour int; Minute int; Second int; Nanosecond int; Weekday int; ZoneOffset int; Zone string }
+	func (t *"time".Time) Format (layout string) string
+	func (t *"time".Time) Nanoseconds () int64
+	func (t *"time".Time) Seconds () int64
+	func (t *"time".Time) String () string
+	func (t *"time".Time) parseNanoseconds (value string, nbytes int) (rangErrString string, err "os".Error)
+	type "github.com/hoisie/web.go".filedata struct { Filename string; Data []uint8 }
+	type "http".ResponseWriter interface { Header() "http".Header; Write(? []uint8) (? int, ? "os".Error); WriteHeader(? int) }
+	import multipart "mime/multipart" // indirect
+	type "mime/multipart".File interface { Close() "os".Error; Read(p []uint8) (n int, err "os".Error); ReadAt(p []uint8, off int64) (n int, err "os".Error); Seek(offset int64, whence int) (ret int64, err "os".Error) }
+	type "mime/multipart".FileHeader struct { Filename string; Header "net/textproto".MIMEHeader; content []uint8; tmpfile string }
+	func (fh *"mime/multipart".FileHeader) Open () (? "mime/multipart".File, ? "os".Error)
+	import textproto "net/textproto" // indirect
+	type "net/textproto".MIMEHeader map[string] []string
+	func (h "net/textproto".MIMEHeader) Add (key string, value string)
+	func (h "net/textproto".MIMEHeader) Del (key string)
+	func (h "net/textproto".MIMEHeader) Get (key string) string
+	func (h "net/textproto".MIMEHeader) Set (key string, value string)
+	type "mime/multipart".Part struct { Header "net/textproto".MIMEHeader; buffer *"bytes".Buffer; mr *"mime/multipart".Reader; disposition string; dispositionParams map[string] string }
+	func (bp *"mime/multipart".Part) Close () "os".Error
+	func (p *"mime/multipart".Part) FileName () string
+	func (p *"mime/multipart".Part) FormName () string
+	func (bp *"mime/multipart".Part) Read (p []uint8) (n int, err "os".Error)
+	func (p *"mime/multipart".Part) parseContentDisposition ()
+	func (bp *"mime/multipart".Part) populateHeaders () "os".Error
+	import bytes "bytes" // indirect
+	type "bytes".Buffer struct { buf []uint8; off int; runeBytes [4]uint8; bootstrap [64]uint8; lastRead "bytes".readOp }
+	func (b *"bytes".Buffer) Bytes () []uint8
+	func (b *"bytes".Buffer) Len () int
+	func (b *"bytes".Buffer) Next (n int) []uint8
+	func (b *"bytes".Buffer) Read (p []uint8) (n int, err "os".Error)
+	func (b *"bytes".Buffer) ReadByte () (c uint8, err "os".Error)
+	func (b *"bytes".Buffer) ReadBytes (delim uint8) (line []uint8, err "os".Error)
+	func (b *"bytes".Buffer) ReadFrom (r "io".Reader) (n int64, err "os".Error)
+	func (b *"bytes".Buffer) ReadRune () (r int, size int, err "os".Error)
+	func (b *"bytes".Buffer) ReadString (delim uint8) (line string, err "os".Error)
+	func (b *"bytes".Buffer) Reset ()
+	func (b *"bytes".Buffer) String () string
+	func (b *"bytes".Buffer) Truncate (n int)
+	func (b *"bytes".Buffer) UnreadByte () "os".Error
+	func (b *"bytes".Buffer) UnreadRune () "os".Error
+	func (b *"bytes".Buffer) Write (p []uint8) (n int, err "os".Error)
+	func (b *"bytes".Buffer) WriteByte (c uint8) "os".Error
+	func (b *"bytes".Buffer) WriteRune (r int) (n int, err "os".Error)
+	func (b *"bytes".Buffer) WriteString (s string) (n int, err "os".Error)
+	func (b *"bytes".Buffer) WriteTo (w "io".Writer) (n int64, err "os".Error)
+	func (b *"bytes".Buffer) grow (n int) int
+	type "bytes".readOp int
+	type "mime/multipart".Form struct { Value map[string] []string; File map[string] []*"mime/multipart".FileHeader }
+	func (f *"mime/multipart".Form) RemoveAll () "os".Error
+	type "mime/multipart".Reader struct { bufReader *"bufio".Reader; currentPart *"mime/multipart".Part; partsRead int; nl []uint8; nlDashBoundary []uint8; dashBoundaryDash []uint8; dashBoundary []uint8 }
+	func (mr *"mime/multipart".Reader) NextPart () (? *"mime/multipart".Part, ? "os".Error)
+	func (r *"mime/multipart".Reader) ReadForm (maxMemory int64) (f *"mime/multipart".Form, err "os".Error)
+	func (mr *"mime/multipart".Reader) isBoundaryDelimiterLine (line []uint8) bool
+	import bufio "bufio" // indirect
+	type "bufio".Reader struct { buf []uint8; rd "io".Reader; r int; w int; err "os".Error; lastByte int; lastRuneSize int }
+	func (b *"bufio".Reader) Buffered () int
+	func (b *"bufio".Reader) Peek (n int) (? []uint8, ? "os".Error)
+	func (b *"bufio".Reader) Read (p []uint8) (n int, err "os".Error)
+	func (b *"bufio".Reader) ReadByte () (c uint8, err "os".Error)
+	func (b *"bufio".Reader) ReadBytes (delim uint8) (line []uint8, err "os".Error)
+	func (b *"bufio".Reader) ReadLine () (line []uint8, isPrefix bool, err "os".Error)
+	func (b *"bufio".Reader) ReadRune () (rune int, size int, err "os".Error)
+	func (b *"bufio".Reader) ReadSlice (delim uint8) (line []uint8, err "os".Error)
+	func (b *"bufio".Reader) ReadString (delim uint8) (line string, err "os".Error)
+	func (b *"bufio".Reader) UnreadByte () "os".Error
+	func (b *"bufio".Reader) UnreadRune () "os".Error
+	func (b *"bufio".Reader) fill ()
+	func (b *"bufio".Reader) readErr () "os".Error
+	type "http".Request struct { Method string; RawURL string; URL *"url".URL; Proto string; ProtoMajor int; ProtoMinor int; Header "http".Header; Body "io".ReadCloser; ContentLength int64; TransferEncoding []string; Close bool; Host string; Form "url".Values; MultipartForm *"mime/multipart".Form; Trailer "http".Header; RemoteAddr string; TLS *"crypto/tls".ConnectionState }
+	func (r *"http".Request) AddCookie (c *"http".Cookie)
+	func (r *"http".Request) Cookie (name string) (? *"http".Cookie, ? "os".Error)
+	func (r *"http".Request) Cookies () []*"http".Cookie
+	func (r *"http".Request) FormFile (key string) (? "mime/multipart".File, ? *"mime/multipart".FileHeader, ? "os".Error)
+	func (r *"http".Request) FormValue (key string) string
+	func (r *"http".Request) MultipartReader () (? *"mime/multipart".Reader, ? "os".Error)
+	func (r *"http".Request) ParseForm () "os".Error
+	func (r *"http".Request) ParseMultipartForm (maxMemory int64) "os".Error
+	func (r *"http".Request) ProtoAtLeast (major int, minor int) bool
+	func (r *"http".Request) Referer () string
+	func (r *"http".Request) SetBasicAuth (username string, password string)
+	func (r *"http".Request) UserAgent () string
+	func (req *"http".Request) Write (w "io".Writer) "os".Error
+	func (req *"http".Request) WriteProxy (w "io".Writer) "os".Error
+	func (r *"http".Request) expectsContinue () bool
+	func (r *"http".Request) multipartReader () (? *"mime/multipart".Reader, ? "os".Error)
+	func (r *"http".Request) wantsHttp10KeepAlive () bool
+	func (req *"http".Request) write (w "io".Writer, usingProxy bool) "os".Error
+	type "io".ReadCloser interface { Close() "os".Error; Read(p []uint8) (n int, err "os".Error) }
+	import tls "crypto/tls" // indirect
+	type "crypto/tls".ConnectionState struct { HandshakeComplete bool; CipherSuite uint16; NegotiatedProtocol string; NegotiatedProtocolIsMutual bool; PeerCertificates []*"crypto/x509".Certificate; VerifiedChains [][]*"crypto/x509".Certificate }
+	import x509 "crypto/x509" // indirect
+	import pkix "crypto/x509/pkix" // indirect
+	type "crypto/x509/pkix".CertificateList struct { TBSCertList "crypto/x509/pkix".TBSCertificateList; SignatureAlgorithm "crypto/x509/pkix".AlgorithmIdentifier; SignatureValue "asn1".BitString }
+	func (certList *"crypto/x509/pkix".CertificateList) HasExpired (currentTimeSeconds int64) bool
+	type "crypto/x509/pkix".TBSCertificateList struct { Raw "asn1".RawContent; Version int :"asn1:\"optional,default:2\""; Signature "crypto/x509/pkix".AlgorithmIdentifier; Issuer "crypto/x509/pkix".RDNSequence; ThisUpdate *"time".Time; NextUpdate *"time".Time; RevokedCertificates []"crypto/x509/pkix".RevokedCertificate :"asn1:\"optional\""; Extensions []"crypto/x509/pkix".Extension :"asn1:\"tag:0,optional,explicit\"" }
+	import asn1 "asn1" // indirect
+	type "asn1".RawContent []uint8
+	type "crypto/x509/pkix".AlgorithmIdentifier struct { Algorithm "asn1".ObjectIdentifier; Parameters "asn1".RawValue :"asn1:\"optional\"" }
+	type "asn1".ObjectIdentifier []int
+	func (oi "asn1".ObjectIdentifier) Equal (other "asn1".ObjectIdentifier) bool
+	type "asn1".RawValue struct { Class int; Tag int; IsCompound bool; Bytes []uint8; FullBytes []uint8 }
+	type "crypto/x509/pkix".RDNSequence []"crypto/x509/pkix".RelativeDistinguishedNameSET
+	type "crypto/x509/pkix".RelativeDistinguishedNameSET []"crypto/x509/pkix".AttributeTypeAndValue
+	type "crypto/x509/pkix".AttributeTypeAndValue struct { Type "asn1".ObjectIdentifier; Value interface { } }
+	type "crypto/x509/pkix".RevokedCertificate struct { SerialNumber *"big".Int; RevocationTime *"time".Time; Extensions []"crypto/x509/pkix".Extension :"asn1:\"optional\"" }
+	import big "big" // indirect
+	import fmt "fmt" // indirect
+	type "fmt".State interface { Flag(c int) bool; Precision() (prec int, ok bool); Width() (wid int, ok bool); Write(b []uint8) (ret int, err "os".Error) }
+	import rand "rand" // indirect
+	type "rand".Rand struct { src "rand".Source }
+	func (r *"rand".Rand) ExpFloat64 () float64
+	func (r *"rand".Rand) Float32 () float32
+	func (r *"rand".Rand) Float64 () float64
+	func (r *"rand".Rand) Int () int
+	func (r *"rand".Rand) Int31 () int32
+	func (r *"rand".Rand) Int31n (n int32) int32
+	func (r *"rand".Rand) Int63 () int64
+	func (r *"rand".Rand) Int63n (n int64) int64
+	func (r *"rand".Rand) Intn (n int) int
+	func (r *"rand".Rand) NormFloat64 () float64
+	func (r *"rand".Rand) Perm (n int) []int
+	func (r *"rand".Rand) Seed (seed int64)
+	func (r *"rand".Rand) Uint32 () uint32
+	type "rand".Source interface { Int63() int64; Seed(seed int64) }
+	type "fmt".ScanState interface { Read(buf []uint8) (n int, err "os".Error); ReadRune() (rune int, size int, err "os".Error); SkipSpace(); Token(skipSpace bool, f func(? int) bool) (token []uint8, err "os".Error); UnreadRune() "os".Error; Width() (wid int, ok bool) }
+	type "io".RuneScanner interface { ReadRune() (rune int, size int, err "os".Error); UnreadRune() "os".Error }
+	type "big".Int struct { neg bool; abs "big".nat }
+	func (z *"big".Int) Abs (x *"big".Int) *"big".Int
+	func (z *"big".Int) Add (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) And (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) AndNot (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) Binomial (n int64, k int64) *"big".Int
+	func (z *"big".Int) Bit (i int) uint
+	func (z *"big".Int) BitLen () int
+	func (z *"big".Int) Bytes () []uint8
+	func (x *"big".Int) Cmp (y *"big".Int) int
+	func (z *"big".Int) Div (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) DivMod (x *"big".Int, y *"big".Int, m *"big".Int) (? *"big".Int, ? *"big".Int)
+	func (z *"big".Int) Exp (x *"big".Int, y *"big".Int, m *"big".Int) *"big".Int
+	func (x *"big".Int) Format (s "fmt".State, ch int)
+	func (z *"big".Int) GobDecode (buf []uint8) "os".Error
+	func (z *"big".Int) GobEncode () (? []uint8, ? "os".Error)
+	func (x *"big".Int) Int64 () int64
+	func (z *"big".Int) Lsh (x *"big".Int, n uint) *"big".Int
+	func (z *"big".Int) Mod (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) ModInverse (g *"big".Int, p *"big".Int) *"big".Int
+	func (z *"big".Int) Mul (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) MulRange (a int64, b int64) *"big".Int
+	func (z *"big".Int) Neg (x *"big".Int) *"big".Int
+	func (z *"big".Int) Not (x *"big".Int) *"big".Int
+	func (z *"big".Int) Or (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) Quo (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) QuoRem (x *"big".Int, y *"big".Int, r *"big".Int) (? *"big".Int, ? *"big".Int)
+	func (z *"big".Int) Rand (rnd *"rand".Rand, n *"big".Int) *"big".Int
+	func (z *"big".Int) Rem (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) Rsh (x *"big".Int, n uint) *"big".Int
+	func (z *"big".Int) Scan (s "fmt".ScanState, ch int) "os".Error
+	func (z *"big".Int) Set (x *"big".Int) *"big".Int
+	func (z *"big".Int) SetBit (x *"big".Int, i int, b uint) *"big".Int
+	func (z *"big".Int) SetBytes (buf []uint8) *"big".Int
+	func (z *"big".Int) SetInt64 (x int64) *"big".Int
+	func (z *"big".Int) SetString (s string, base int) (? *"big".Int, ? bool)
+	func (x *"big".Int) Sign () int
+	func (x *"big".Int) String () string
+	func (z *"big".Int) Sub (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) Xor (x *"big".Int, y *"big".Int) *"big".Int
+	func (z *"big".Int) scan (r "io".RuneScanner, base int) (? *"big".Int, ? int, ? "os".Error)
+	type "big".Word uintptr
+	type "big".nat []"big".Word
+	func (z "big".nat) add (x "big".nat, y "big".nat) "big".nat
+	func (z "big".nat) and (x "big".nat, y "big".nat) "big".nat
+	func (z "big".nat) andNot (x "big".nat, y "big".nat) "big".nat
+	func (z "big".nat) bit (i uint) uint
+	func (x "big".nat) bitLen () int
+	func (z "big".nat) bytes (buf []uint8) int
+	func (z "big".nat) clear ()
+	func (x "big".nat) cmp (y "big".nat) int
+	func (x "big".nat) decimalString () string
+	func (z "big".nat) div (z2 "big".nat, u "big".nat, v "big".nat) (q "big".nat, r "big".nat)
+	func (z "big".nat) divLarge (u "big".nat, uIn "big".nat, v "big".nat) (q "big".nat, r "big".nat)
+	func (z "big".nat) divW (x "big".nat, y "big".Word) (q "big".nat, r "big".Word)
+	func (z "big".nat) expNN (x "big".nat, y "big".nat, m "big".nat) "big".nat
+	func (z "big".nat) make (n int) "big".nat
+	func (x "big".nat) modW (d "big".Word) "big".Word
+	func (z "big".nat) mul (x "big".nat, y "big".nat) "big".nat
+	func (z "big".nat) mulAddWW (x "big".nat, y "big".Word, r "big".Word) "big".nat
+	func (z "big".nat) mulRange (a uint64, b uint64) "big".nat
+	func (z "big".nat) norm () "big".nat
+	func (z "big".nat) or (x "big".nat, y "big".nat) "big".nat
+	func (x "big".nat) powersOfTwoDecompose () (q "big".nat, k int)
+	func (n "big".nat) probablyPrime (reps int) bool
+	func (z "big".nat) random (rand *"rand".Rand, limit "big".nat, n int) "big".nat
+	func (z "big".nat) scan (r "io".RuneScanner, base int) (? "big".nat, ? int, ? "os".Error)
+	func (z "big".nat) set (x "big".nat) "big".nat
+	func (z "big".nat) setBit (x "big".nat, i uint, b uint) "big".nat
+	func (z "big".nat) setBytes (buf []uint8) "big".nat
+	func (z "big".nat) setUint64 (x uint64) "big".nat
+	func (z "big".nat) setWord (x "big".Word) "big".nat
+	func (z "big".nat) shl (x "big".nat, s uint) "big".nat
+	func (z "big".nat) shr (x "big".nat, s uint) "big".nat
+	func (x "big".nat) string (charset string) string
+	func (z "big".nat) sub (x "big".nat, y "big".nat) "big".nat
+	func (z "big".nat) xor (x "big".nat, y "big".nat) "big".nat
+	type "crypto/x509/pkix".Extension struct { Id "asn1".ObjectIdentifier; Critical bool :"asn1:\"optional\""; Value []uint8 }
+	type "asn1".BitString struct { Bytes []uint8; BitLength int }
+	func (b "asn1".BitString) At (i int) int
+	func (b "asn1".BitString) RightAlign () []uint8
+	type "crypto/x509".SignatureAlgorithm int
+	import rsa "crypto/rsa" // indirect
+	type "crypto/rsa".PrivateKey struct { ? "crypto/rsa".PublicKey; D *"big".Int; Primes []*"big".Int; Precomputed "crypto/rsa".PrecomputedValues }
+	func (priv *"crypto/rsa".PrivateKey) Precompute ()
+	func (priv *"crypto/rsa".PrivateKey) Validate () "os".Error
+	type "crypto/rsa".PublicKey struct { N *"big".Int; E int }
+	type "crypto/rsa".PrecomputedValues struct { Dp *"big".Int; Dq *"big".Int; Qinv *"big".Int; CRTValues []"crypto/rsa".CRTValue }
+	type "crypto/rsa".CRTValue struct { Exp *"big".Int; Coeff *"big".Int; R *"big".Int }
+	type "crypto/x509".VerifyOptions struct { DNSName string; Intermediates *"crypto/x509".CertPool; Roots *"crypto/x509".CertPool; CurrentTime int64 }
+	type "crypto/x509".CertPool struct { bySubjectKeyId map[string] []int; byName map[string] []int; certs []*"crypto/x509".Certificate }
+	func (s *"crypto/x509".CertPool) AddCert (cert *"crypto/x509".Certificate)
+	func (s *"crypto/x509".CertPool) AppendCertsFromPEM (pemCerts []uint8) bool
+	func (s *"crypto/x509".CertPool) findVerifiedParents (cert *"crypto/x509".Certificate) []int
+	type "crypto/x509".Certificate struct { Raw []uint8; RawTBSCertificate []uint8; RawSubjectPublicKeyInfo []uint8; Signature []uint8; SignatureAlgorithm "crypto/x509".SignatureAlgorithm; PublicKeyAlgorithm "crypto/x509".PublicKeyAlgorithm; PublicKey interface { }; Version int; SerialNumber *"big".Int; Issuer "crypto/x509/pkix".Name; Subject "crypto/x509/pkix".Name; NotBefore *"time".Time; NotAfter *"time".Time; KeyUsage "crypto/x509".KeyUsage; ExtKeyUsage []"crypto/x509".ExtKeyUsage; UnknownExtKeyUsage []"asn1".ObjectIdentifier; BasicConstraintsValid bool; IsCA bool; MaxPathLen int; SubjectKeyId []uint8; AuthorityKeyId []uint8; DNSNames []string; EmailAddresses []string; PermittedDNSDomainsCritical bool; PermittedDNSDomains []string; PolicyIdentifiers []"asn1".ObjectIdentifier }
+	func (c *"crypto/x509".Certificate) CheckCRLSignature (crl *"crypto/x509/pkix".CertificateList) "os".Error
+	func (c *"crypto/x509".Certificate) CheckSignature (algo "crypto/x509".SignatureAlgorithm, signed []uint8, signature []uint8) "os".Error
+	func (c *"crypto/x509".Certificate) CheckSignatureFrom (parent *"crypto/x509".Certificate) "os".Error
+	func (c *"crypto/x509".Certificate) CreateCRL (rand "io".Reader, priv *"crypto/rsa".PrivateKey, revokedCerts []"crypto/x509/pkix".RevokedCertificate, now *"time".Time, expiry *"time".Time) (crlBytes []uint8, err "os".Error)
+	func (c *"crypto/x509".Certificate) Equal (other *"crypto/x509".Certificate) bool
+	func (c *"crypto/x509".Certificate) Verify (opts "crypto/x509".VerifyOptions) (chains [][]*"crypto/x509".Certificate, err "os".Error)
+	func (c *"crypto/x509".Certificate) VerifyHostname (h string) "os".Error
+	func (c *"crypto/x509".Certificate) buildChains (cache map[int] [][]*"crypto/x509".Certificate, currentChain []*"crypto/x509".Certificate, opts *"crypto/x509".VerifyOptions) (chains [][]*"crypto/x509".Certificate, err "os".Error)
+	func (c *"crypto/x509".Certificate) isValid (certType int, opts *"crypto/x509".VerifyOptions) "os".Error
+	type "crypto/x509".PublicKeyAlgorithm int
+	type "crypto/x509/pkix".Name struct { Country []string; Organization []string; OrganizationalUnit []string; Locality []string; Province []string; StreetAddress []string; PostalCode []string; SerialNumber string; CommonName string }
+	func (n *"crypto/x509/pkix".Name) FillFromRDNSequence (rdns *"crypto/x509/pkix".RDNSequence)
+	func (n "crypto/x509/pkix".Name) ToRDNSequence () "crypto/x509/pkix".RDNSequence
+	type "crypto/x509".KeyUsage int
+	type "crypto/x509".ExtKeyUsage int
+	import log "log" // indirect
+	type "log".Logger struct { mu "sync".Mutex; prefix string; flag int; out "io".Writer; buf "bytes".Buffer }
+	func (l *"log".Logger) Fatal (v ...interface { })
+	func (l *"log".Logger) Fatalf (format string, v ...interface { })
+	func (l *"log".Logger) Fatalln (v ...interface { })
+	func (l *"log".Logger) Flags () int
+	func (l *"log".Logger) Output (calldepth int, s string) "os".Error
+	func (l *"log".Logger) Panic (v ...interface { })
+	func (l *"log".Logger) Panicf (format string, v ...interface { })
+	func (l *"log".Logger) Panicln (v ...interface { })
+	func (l *"log".Logger) Prefix () string
+	func (l *"log".Logger) Print (v ...interface { })
+	func (l *"log".Logger) Printf (format string, v ...interface { })
+	func (l *"log".Logger) Println (v ...interface { })
+	func (l *"log".Logger) SetFlags (flag int)
+	func (l *"log".Logger) SetPrefix (prefix string)
+	func (l *"log".Logger) formatHeader (buf *"bytes".Buffer, ns int64, file string, line int)
+	type "io".ReadWriteCloser interface { Close() "os".Error; Read(p []uint8) (n int, err "os".Error); Write(p []uint8) (n int, err "os".Error) }
+	type "github.com/hoisie/web.go".conn interface { Close(); SetHeader(hdr string, val string, unique bool); StartResponse(status int); Write(data []uint8) (n int, err "os".Error) }
+	type "github.com/hoisie/web.go".Server struct { Config *"github.com/hoisie/web.go".ServerConfig; routes []"github.com/hoisie/web.go".route; Logger *"log".Logger; l "net".Listener; closed bool }
+	func (s *"github.com/hoisie/web.go".Server) Close ()
+	func (s *"github.com/hoisie/web.go".Server) Delete (route string, handler interface { })
+	func (s *"github.com/hoisie/web.go".Server) Get (route string, handler interface { })
+	func (s *"github.com/hoisie/web.go".Server) Post (route string, handler interface { })
+	func (s *"github.com/hoisie/web.go".Server) Put (route string, handler interface { })
+	func (s *"github.com/hoisie/web.go".Server) Run (addr string)
+	func (s *"github.com/hoisie/web.go".Server) RunFcgi (addr string)
+	func (s *"github.com/hoisie/web.go".Server) RunScgi (addr string)
+	func (s *"github.com/hoisie/web.go".Server) ServeHTTP (c "http".ResponseWriter, req *"http".Request)
+	func (s *"github.com/hoisie/web.go".Server) SetLogger (logger *"log".Logger)
+	func (s *"github.com/hoisie/web.go".Server) addRoute (r string, method string, handler interface { })
+	func (s *"github.com/hoisie/web.go".Server) handleFcgiConnection (fd "io".ReadWriteCloser)
+	func (s *"github.com/hoisie/web.go".Server) handleScgiRequest (fd "io".ReadWriteCloser)
+	func (s *"github.com/hoisie/web.go".Server) initServer ()
+	func (s *"github.com/hoisie/web.go".Server) listenAndServeFcgi (addr string) "os".Error
+	func (s *"github.com/hoisie/web.go".Server) listenAndServeScgi (addr string) "os".Error
+	func (s *"github.com/hoisie/web.go".Server) routeHandler (req *"github.com/hoisie/web.go".Request, c "github.com/hoisie/web.go".conn)
+	func (s *"github.com/hoisie/web.go".Server) safelyCall (function "reflect".Value, args []"reflect".Value) (resp []"reflect".Value, e interface { })
+	type "github.com/hoisie/web.go".ServerConfig struct { StaticDir string; Addr string; Port int; CookieSecret string; RecoverPanic bool }
+	type "github.com/hoisie/web.go".route struct { r string; cr *"regexp".Regexp; method string; handler "reflect".Value }
+	import regexp "regexp" // indirect
+	type "io".RuneReader interface { ReadRune() (rune int, size int, err "os".Error) }
+	type "regexp".instr struct { kind int; index int; next *"regexp".instr; char int; braNum int; cclass *"regexp".charClass; left *"regexp".instr }
+	func (i *"regexp".instr) print ()
+	type "regexp".charClass struct { negate bool; ranges []int; cmin int; cmax int }
+	func (cclass *"regexp".charClass) addRange (a int, b int)
+	func (cclass *"regexp".charClass) matches (c int) bool
+	func (cclass *"regexp".charClass) print ()
+	type "regexp".input interface { "regexp".canCheckPrefix() bool; "regexp".hasPrefix(re *"regexp".Regexp) bool; "regexp".index(re *"regexp".Regexp, pos int) int; "regexp".step(pos int) (rune int, width int) }
+	type "regexp".Regexp struct { expr string; prefix string; prefixBytes []uint8; inst []*"regexp".instr; start *"regexp".instr; prefixStart *"regexp".instr; nbra int }
+	func (re *"regexp".Regexp) Find (b []uint8) []uint8
+	func (re *"regexp".Regexp) FindAll (b []uint8, n int) [][]uint8
+	func (re *"regexp".Regexp) FindAllIndex (b []uint8, n int) [][]int
+	func (re *"regexp".Regexp) FindAllString (s string, n int) []string
+	func (re *"regexp".Regexp) FindAllStringIndex (s string, n int) [][]int
+	func (re *"regexp".Regexp) FindAllStringSubmatch (s string, n int) [][]string
+	func (re *"regexp".Regexp) FindAllStringSubmatchIndex (s string, n int) [][]int
+	func (re *"regexp".Regexp) FindAllSubmatch (b []uint8, n int) [][][]uint8
+	func (re *"regexp".Regexp) FindAllSubmatchIndex (b []uint8, n int) [][]int
+	func (re *"regexp".Regexp) FindIndex (b []uint8) []int
+	func (re *"regexp".Regexp) FindReaderIndex (r "io".RuneReader) []int
+	func (re *"regexp".Regexp) FindReaderSubmatchIndex (r "io".RuneReader) []int
+	func (re *"regexp".Regexp) FindString (s string) string
+	func (re *"regexp".Regexp) FindStringIndex (s string) []int
+	func (re *"regexp".Regexp) FindStringSubmatch (s string) []string
+	func (re *"regexp".Regexp) FindStringSubmatchIndex (s string) []int
+	func (re *"regexp".Regexp) FindSubmatch (b []uint8) [][]uint8
+	func (re *"regexp".Regexp) FindSubmatchIndex (b []uint8) []int
+	func (re *"regexp".Regexp) LiteralPrefix () (prefix string, complete bool)
+	func (re *"regexp".Regexp) Match (b []uint8) bool
+	func (re *"regexp".Regexp) MatchReader (r "io".RuneReader) bool
+	func (re *"regexp".Regexp) MatchString (s string) bool
+	func (re *"regexp".Regexp) NumSubexp () int
+	func (re *"regexp".Regexp) ReplaceAll (src []uint8, repl []uint8) []uint8
+	func (re *"regexp".Regexp) ReplaceAllFunc (src []uint8, repl func(? []uint8) []uint8) []uint8
+	func (re *"regexp".Regexp) ReplaceAllString (src string, repl string) string
+	func (re *"regexp".Regexp) ReplaceAllStringFunc (src string, repl func(? string) string) string
+	func (re *"regexp".Regexp) String () string
+	func (re *"regexp".Regexp) add (i *"regexp".instr) *"regexp".instr
+	func (re *"regexp".Regexp) allMatches (s string, b []uint8, n int, deliver func(? []int))
+	func (re *"regexp".Regexp) doExecute (i "regexp".input, pos int) []int
+	func (re *"regexp".Regexp) doParse ()
+	func (re *"regexp".Regexp) dump ()
+	func (re *"regexp".Regexp) eliminateNops ()
+	func (re *"regexp".Regexp) setPrefix ()
+	type "net".Listener interface { Accept() (c "net".Conn, err "os".Error); Addr() "net".Addr; Close() "os".Error }
+	type "net".Conn interface { Close() "os".Error; LocalAddr() "net".Addr; Read(b []uint8) (n int, err "os".Error); RemoteAddr() "net".Addr; SetReadTimeout(nsec int64) "os".Error; SetTimeout(nsec int64) "os".Error; SetWriteTimeout(nsec int64) "os".Error; Write(b []uint8) (n int, err "os".Error) }
+	func "".create (c *"github.com/hoisie/web.go".Context, title string)
+	func "".main ()
+	var "".initdoneÂ· uint8
+	func "".init ()
+
+$$  // local types
+
+$$
+
+!
+„ y</ „ y<home „ y<george „ y<goprojects „ y<src „ y<gwiki „ y<gwiki.go 8      „ y<github.com „ y<hoisie „ y<web.go.a 8     ÿÿÿÿu„ y<github.com „ y<hoisie „ y<mustache.go.a 8     ÿÿÿÿu„ y<github.com „ y<russross „ y<blackfriday.a 8     ÿÿÿÿu„ y<launchpad.net „ y<mgo.a 8     ÿÿÿÿu„ y<launchpad.net „ y<gobson „ y<bson.a 8     ÿÿÿÿu„ y<html.a 8 	    ÿÿÿÿu„ y<os.a 8 
+    ÿÿÿÿu8 Y     „ q"".index „ qtype.func() string ã    ‘qE       u„ qgo.string."index" ª   q„ "".title ª   ±     ±     „ q"".view „ qtype.func(string) string      ‘q­      „ t""..noname ­   tr       r       tª      „ qruntime.throwreturn      qª      „ q	"".check „ q
+type.func(os.Error) ã    ‘	q
+E       uY        pY        p„ t"".e „ qtype.os.Error ª   ‘t¢   ŽuQ        p„ runtime.elem ª   ­   ‘t­   Ž­   •   t­      Ž„ qruntime.convI2E „ qtype.func(os.Error) interface { }      ‘qª      ª   ±     ±     „ qruntime.panic „ qtype.func(interface { })      ‘qY        pª      ã    ‘qE`       u­   u   tr    u   tY     %   pY     †   p„ qgo.string."localhost" ª   q„ launchpad%2enet/mgo.url ª   ±     ±     „ qlaunchpad%2enet/mgo.Mongo „ qtype.func(string) (*launchpad%2enet/mgo.Session, os.Error)      ‘q„ launchpad%2enet/mgo.session ­      „ launchpad%2enet/mgo.err ª      ­   Ž„ s"".err ­   •àÿÿÿs­      Ž­   •èÿÿÿs„ qtype.*launchpad%2enet/mgo.Session ­   „ s"".session ­   •Ðÿÿÿs„ launchpad%2enet/mgo.s ­   „ qlaunchpad%2enet/mgo.(*Session).Close ¹   q x ¹      u „ qruntime.deferproc      q·    ·    Ç   Z     $   p„ "".e ª    ­    •àÿÿÿs­    Ž­    •èÿÿÿs­       Ž      ‘	q
+­!   •Ðÿÿÿs„ "".session ­!   ª!      „ t "".title „ q!type.string ­!   ‘ t!­!   Žr !   •    t!r !      Ž„ q""".getPage „ q#type.func(*launchpad%2enet/mgo.Session, string) (*"".Page, os.Error)  !    ‘"q#„ $"".result ­!      $„ s%"".result „ q&type.*"".Page ­!   •Øÿÿÿ%s&„ '"".err ª!       '­!   Ž­!      Žª"   ­"   Ž­"      Ž "    ‘	q
+­#   •Øÿÿÿ%s&š#      uª#   ±#     ±#     „ q(runtime.stringtoslicebyte „ q)type.func(string) []uint8  #    ‘(q)ª#      „ *github%2ecom/russross/blackfriday.input ª#   *±#     ±#     „ q+github%2ecom/russross/blackfriday.MarkdownCommon „ q,type.func([]uint8) []uint8  #    ‘+q,ª#      ª#   ±#     ±#     „ q-runtime.slicebytetostring „ q.type.func([]uint8) string  #    ‘-q.ª#      ­#   •Øÿÿÿ%s&š#      u±#     ±#     r $      u„ q/runtime.new „ q0type.func(int32) *[1]interface { }  $    ‘/q0­$      „ s1"".autotmp_0000 r $      uøÿÿÿ1sr $      uüÿÿÿ1s­$   ðÿÿÿ1s„ qtype.uint8 „ runtime.typ ­$   “q &x­$   •Øÿÿÿ%s&­$      „ qruntime.convT2E „ qtype.func(*uint8, *"".Page) interface { }  $    ‘qª$      ª$   ðÿÿÿ1s­$   ’±$     ±$     „ q"".viewtpl „ qtype.*github%2ecom/hoisie/mustache%2ego.Template ­$   ‘q„ github%2ecom/hoisie/mustache%2ego.tmpl ­$   „ github%2ecom/hoisie/mustache%2ego.context ª$      ­$   ðÿÿÿ1s­$   r $   øÿÿÿ1sr $      r $   üÿÿÿ1sr $      „ q	github%2ecom/hoisie/mustache%2ego.(*Template).Render  $    	qª$      ­$   Ž„ t
+""..noname ­$      
+tr $      Žr $      
+tY $    $   p„ qruntime.throwreturn  %    q„ qruntime.deferreturn  %    qª %     ã )   ‘"q#E¨   0   u„ t"".err „ qtype.os.Error ­)   u•    t­)   u•(   t­)   u&r *       u„ qtype.func(int32) *"".Page  *    ‘/q­*      „ t"".result ­*   •   t&„ t"".session ­+   ‘t­+   „ qgo.string."gwiki" ª+   q„ launchpad%2enet/mgo.name ª+      ±+     ±+     „ qlaunchpad%2enet/mgo.(*Session).DB  +    qª+      „ launchpad%2enet/mgo.db ª+   ±+     ±+     ±+     „ qgo.string."pages" ª+   qª+      ±+     ±+     „ qlaunchpad%2enet/mgo.Database.C  +    qª+   (   „ s"".c „ qtype.launchpad%2enet/mgo.Collection ª+   •¸ÿÿÿs­+      u¨ +     ±+     „ qtype.launchpad%2enet/gobson/bson.M „ runtime.mapType ­,   “q x„ runtime.hint ­,   u   „ qruntime.makemap „ qtype.func(*uint8, int64) map[string] interface { }  ,    ‘q­,      „ s"".autotmp_0002 ­,   ðÿÿÿs­,   “q !x„  runtime.elem ª,       „ t!"".title „ q"type.string ­,   •   !t"­,   Žr ,   •   !t"r ,      Ž„ q#type.func(*uint8, string) interface { }  ,    ‘q#ª,      „ $runtime.val ª,       $× ,     š,      uš,      u­,      u¨ ,     ±,     ! ,     ­,   “q x­,   ðÿÿÿs„ %runtime.hmap ­,      %„ q&go.string."title" ª,   &q„ 'runtime.key ª,      '±,     ±,     „ q(runtime.mapassign1 „ q)type.func(*uint8, map[string] interface { }, string, interface { })  ,    ‘(q)­,   “q x­,   ðÿÿÿs­,       „ q*type.func(*uint8, launchpad%2enet/gobson/bson.M) interface { }  ,    ‘q*ª,      „ +launchpad%2enet/mgo.query ª,   8   +±,     ±,     ª,   •¸ÿÿÿs„ ,launchpad%2enet/mgo.c ª,   ,­,      u¨ ,     ±,     „ q-launchpad%2enet/mgo.Collection.Find  ,    -q­,   H   „ s."".autotmp_0003 ­,   øÿÿÿ.s„ q/type.*"".Page ­,   “q /x­,   •   t/­,        ,    ‘qª,      „ 0launchpad%2enet/mgo.result ª,      0±,     ±,     ­,   øÿÿÿ.s„ 1launchpad%2enet/mgo.q ­,   1„ qlaunchpad%2enet/mgo.(*Query).One  ,    qª,      ­,   Ž­,   •    t­,      Ž­,   •(   tª -      .    qª .     „ q"".edit „ qtype.func(string) string ã 0   ‘qE`       u­0   u   
+tr 0   u   
+tY 0    ë   pY 0    K  p„ qgo.string."localhost" ª1   q„ launchpad%2enet/mgo.url ª1   ±1     ±1     „ qlaunchpad%2enet/mgo.Mongo „ qtype.func(string) (*launchpad%2enet/mgo.Session, os.Error)  1    ‘q„ launchpad%2enet/mgo.session ­1      „ s	"".session „ q
+type.*launchpad%2enet/mgo.Session ­1   •Ðÿÿÿ	s
+„ launchpad%2enet/mgo.err ª1      ­1   Ž­1      Ž„ "".e ª2   ­2   Ž­2      Ž„ q"".check „ qtype.func(os.Error)  2    ‘q­3   •Ðÿÿÿ	s
+„ launchpad%2enet/mgo.s ­3   „ qlaunchpad%2enet/mgo.(*Session).Close ¹3   q x ¹3      u „ qruntime.deferproc  3    q·3    ·3    Ç3   Z 3    ê   p­4   •Ðÿÿÿ	s
+„ "".session ­4   „ "".title ª4      „ t"".title ­4   ‘t"­4   Žr 4   •   t"r 4      Ž„ q"".getPage „ qtype.func(*launchpad%2enet/mgo.Session, string) (*"".Page, os.Error)  4    ‘q„ "".result ­4      „ s"".result ­4   •Øÿÿÿs/„ "".err ª4       ­4   Ž­4      ŽY 5      pY 5    %  p„ runtime.i1 ª5   „ s"".err „ qtype.os.Error ­5   •àÿÿÿs­5   ­5   •èÿÿÿs­5      „ runtime.i2 ª5      „ qlaunchpad%2enet/mgo.NotFound ­5   ‘q­5   ­5   •   q­5      „ qruntime.ifaceeq „ q type.func(os.Error, os.Error) bool  5    ‘q q 5       % 5   uQ 5      p­6   •Øÿÿÿs/­6   ‘t"­6   Žr 6   •   t"r 6      ŽY 5    +  pª8   ­8   •àÿÿÿs­8   Ž­8   •èÿÿÿs­8      Ž 8    ‘qr :      u„ q!runtime.new „ q"type.func(int32) *[1]interface { }  :    ‘!q"­:      „ s#"".autotmp_0004 r :      uøÿÿÿ#sr :      uüÿÿÿ#s­:   ðÿÿÿ#s„ q$type.uint8 „ %runtime.typ ­:   “q /x$%­:   •Øÿÿÿs/„ &runtime.elem ­:      &„ q'runtime.convT2E „ q(type.func(*uint8, *"".Page) interface { }  :    ‘'q(ª:      ª:   ðÿÿÿ#s­:   ’±:     ±:     „ q)"".createtpl „ q*type.*github%2ecom/hoisie/mustache%2ego.Template ­:   ‘)q*„ +github%2ecom/hoisie/mustache%2ego.tmpl ­:   +„ ,github%2ecom/hoisie/mustache%2ego.context ª:      ,­:   ðÿÿÿ#s­:   r :   øÿÿÿ#sr :      r :   üÿÿÿ#sr :      „ q-github%2ecom/hoisie/mustache%2ego.(*Template).Render  :    -qª:      ­:   Ž„ t.""..noname ­:      .tr :      Žr :      .tY :    ê   p„ q/runtime.throwreturn  ;    /q„ q0runtime.deferreturn  ;    0qª ;     „ q1"".create „ qtype.func(*github%2ecom/hoisie/web%2ego.Context, string) ã <   ‘1qEð      uY <    P  pY <    !  p„ qtype.map[string] string „ runtime.mapType ­=   “q x$„ t"".c „ qtype.*github%2ecom/hoisie/web%2ego.Context ­=   ‘t­=   Ž­=   ˜   Ž„ runtime.hmap ­=      „ qgo.string."title" ª=   q„ runtime.key ª=      ±=     ±=     „ q	runtime.mapaccess1 „ q
+type.func(*uint8, map[string] string, string) string  =    ‘	q
+„ qtype.string r =   •   t­=       r =   (   Y =    _  pY =    {  pY =    a  pY =    o  p& =   Z =    `  pª=   ­=   •   t­=   r =      ª=      ­=   r =      „ qruntime.cmpstring „ qtype.func(string, string) int  =    ‘qr =       & =   uZ =    `  pY =    ^  p­>   “q x$%„ qgo.string."Invalid params" ª>   qª>      &±>     ±>     „ qtype.func(*uint8, string) interface { }  >    ‘'qª>      ª>   ±>     ±>     „ qruntime.panic „ qtype.func(interface { })  >    ‘qY =    {  p„ qgo.string."localhost" ª@   q„ launchpad%2enet/mgo.url ª@   ±@     ±@     „ qlaunchpad%2enet/mgo.Mongo „ qtype.func(string) (*launchpad%2enet/mgo.Session, os.Error)  @    ‘q„ launchpad%2enet/mgo.session ­@      „ launchpad%2enet/mgo.err ª@      ­@   Ž­@   •ÿÿÿs­@      Ž­@   •˜ÿÿÿs„ qtype.*launchpad%2enet/mgo.Session ­A   „ s"".session ­A   •¨ÿÿÿs„ launchpad%2enet/mgo.s ­A   „ qlaunchpad%2enet/mgo.(*Session).Close ¹A   q x ¹A      u „ qruntime.deferproc  A    q·A    ·A    ÇA   Z A    O  p„ "".e ªB   „ s"".err „ qtype.os.Error ­B   •ÿÿÿs­B   Ž­B   •˜ÿÿÿs­B      Ž„ q "".check „ q!type.func(os.Error)  B    ‘ q!­C   •¨ÿÿÿs„ """.session ­C   "„ #"".title ªC      #„ t$"".title ­C   •   $t­C   Žr C   •   $tr C      Ž„ q%"".getPage „ q&type.func(*launchpad%2enet/mgo.Session, string) (*"".Page, os.Error)  C    ‘%q&„ '"".result ­C      '„ s("".result „ q)type.*"".Page ­C   •èÿÿÿ(s)„ *"".err ªC       *­C   Ž­C      ŽY D    ¥  pY D    ¹  p„ +runtime.i1 ªD   +„ s,"".err ­D   •ÿÿÿ,s­D   ­D   •˜ÿÿÿ,s­D      „ -runtime.i2 ªD      -„ q.launchpad%2enet/mgo.NotFound ­D   ‘.q­D   ­D   •   .q­D      „ q/runtime.ifaceeq „ q0type.func(os.Error, os.Error) bool  D    ‘/q0q D       % D   uQ D    ¤  p­E   •èÿÿÿ(s)­E   •   $t­E   Žr E   •   $tr E      ŽY D    ¿  pªG   ­G   •ÿÿÿ,s­G   Ž­G   •˜ÿÿÿ,s­G      Ž G    ‘ q!r I       u„ q1runtime.new „ qtype.func(int32) *"".Page  I    ‘1q­I      „ s"".autotmp_0007 ­I    ÿÿÿs­I   •   $t­I   ‹r I   •   $tr I      ‹„ qtype.map[string] string „ qtype.uint8 „ runtime.mapType ­I   “q x„ t"".c „ qtype.*github%2ecom/hoisie/web%2ego.Context ­I   ‘t­I   Ž­I   ˜   Ž„ runtime.hmap ­I      „ q	go.string."body" ªI   	q„ 
+runtime.key ªI      
+±I     ±I     „ qruntime.mapaccess1 „ qtype.func(*uint8, map[string] string, string) string  I    ‘qªI       „ html.s ªI   ±I     ±I     „ qhtml.EscapeString „ qtype.func(string) string  I    ‘q­I    ÿÿÿsªI      ­I   šI      u±I     ±I     „ s"".res ­I   •ˆÿÿÿs)„ s"".session ­J   •¨ÿÿÿs­J   „ qgo.string."gwiki" ªJ   q„ launchpad%2enet/mgo.name ªJ      ±J     ±J     „ qlaunchpad%2enet/mgo.(*Session).DB  J    qªJ      „ launchpad%2enet/mgo.db ªJ   ±J     ±J     ±J     „ qgo.string."pages" ªJ   qªJ      ±J     ±J     „ qlaunchpad%2enet/mgo.Database.C  J    qªJ   (   „ s"".db „ qtype.launchpad%2enet/mgo.Collection ªJ   •°ÿÿÿs­J      u¨ J     ±J     „ runtime.typ ­K   “q )x­K   •èÿÿÿ(s)„ runtime.elem ­K      „ qruntime.convT2E „ qtype.func(*uint8, *"".Page) interface { }  K    ‘q­K      „ s"".autotmp_0008 ­K   ðÿÿÿs­K      ­K   øÿÿÿs­K   “q )x­K   •ˆÿÿÿs)­K       K    ‘qªK      „ launchpad%2enet/mgo.change ªK   H   ±K     ±K     ªK   •°ÿÿÿs„  launchpad%2enet/mgo.c ªK    ­K      u¨ K     ±K     „ !launchpad%2enet/mgo.selector ªK   8   !­K   ðÿÿÿs­K   Ž­K   øÿÿÿs­K      Ž„ q"launchpad%2enet/mgo.Collection.Upsert  K    "qr L      u„ q#go.string."/view/" ªL   #qªL      ±L     ±L     ªL      „ q$type.string „ t%"".title ­L   •   %t$­L   Žr L   •   %t$r L      Ž„ q&runtime.concatstring „ q'type.func(int, string, string) string  L    ‘&q'ªL   (   „ (github%2ecom/hoisie/web%2ego.url_ ªL      (±L     ±L     ­L   ‘t„ )github%2ecom/hoisie/web%2ego.ctx ­L   )„ *github%2ecom/hoisie/web%2ego.status r L   .  u   *„ q+github%2ecom/hoisie/web%2ego.(*Context).Redirect  L    +q„ q,runtime.deferreturn  M    ,qª M     „ q-"".main „ q.type.func() ã N   ‘-q.8   u„ /"".e ªO   /„ q0"".viewtplerr „ q1type.os.Error ­O   ‘0q1­O   Ž­O   •   0q1­O      Ž„ q"".check „ qtype.func(os.Error)  O    ‘qªP   /„ q"".createtplerr ­P   ‘q1­P   Ž­P   •   q1­P      Ž P    ‘q„ qos.Args „ qtype.[]string ªQ   ‘q& Q      Ž   uT Q    4  p„ qruntime.panicindex  Q    q­Q   ŽšQ       u­Q   Ž„ q"".server ­Q   ‘q$r Q      Žr Q   •   q$„ qtype.func() string „ q	type.uint8 ­R   “q x	„ q
+"".index ­R   “q 
+x­R      „ qtype.func(*uint8, func() string) interface { }  R    ‘qªR      „ github%2ecom/hoisie/web%2ego.handler ªR      ±R     ±R     „ qgo.string."/" ªR   q„ github%2ecom/hoisie/web%2ego.route ªR   ±R     ±R     „ qgithub%2ecom/hoisie/web%2ego.Get „ qtype.func(string, interface { })  R    ‘q„ qtype.func(string) string ­S   “q x	„ q"".view ­S   “q x­S      „ qtype.func(*uint8, func(string) string) interface { }  S    ‘qªS      ªS      ±S     ±S     „ qgo.string."/view/(.*)" ªS   qªS   ±S     ±S      S    ‘q­T   “q x	„ q"".edit ­T   “q x­T       T    ‘qªT      ªT      ±T     ±T     „ qgo.string."/edit/(.*)" ªT   qªT   ±T     ±T      T    ‘q„ qtype.func(*github%2ecom/hoisie/web%2ego.Context, string) ­U   “q x	„ q"".create ­U   “q x­U      „ qtype.func(*uint8, func(*github%2ecom/hoisie/web%2ego.Context, string)) interface { }  U    ‘qªU      ªU      ±U     ±U     ªU   qªU   ±U     ±U     „ qgithub%2ecom/hoisie/web%2ego.Post  U    ‘qr V      u„ qgo.string.":" ªV   qªV      ±V     ±V     ªV   ‘q& V      ‘   uT V    w  p V    q­V   ‘šV      uªV      ±V     ±V      V    ‘&q'ªV   (   „ github%2ecom/hoisie/web%2ego.addr ªV   ±V     ±V     „ qgithub%2ecom/hoisie/web%2ego.Run „ qtype.func(string)  V    ‘qª W     „ q"".init ã W   ‘q.(   u„ q "".initdoneÂ· q W   ‘ q	Y W    ‡  pY W    “  pq W   	% W   uQ W    †  pY W    Œ  pY W    ‘  pq W   	% W      uZ W    ‹  pª W     Y W    ‘  p„ q!runtime.throwinit  W    ‘!q.Y W    “  pq W      u‘ q	„ q"os.init  W    ‘"q.„ q#html.init  W    ‘#q.„ q$launchpad%2enet/gobson/bson.init  W    ‘$q.„ q%launchpad%2enet/mgo.init  W    ‘%q.„ q&github%2ecom/russross/blackfriday.init  W    ‘&q.„ q'github%2ecom/hoisie/mustache%2ego.init  W    ‘'q.„ q(github%2ecom/hoisie/web%2ego.init  W    ‘(q.„ q)go.string."view.html" ª   )q„ *github%2ecom/hoisie/mustache%2ego.filename ª   *±     ±     „ q+github%2ecom/hoisie/mustache%2ego.ParseFile „ q,type.func(string) (*github%2ecom/hoisie/mustache%2ego.Template, os.Error)      ‘+q,­      „ q-"".viewtpl „ q.type.*github%2ecom/hoisie/mustache%2ego.Template ­   ‘-q.ª      ­   Ž­   ‘0q1­      Ž­   •   0q1„ q/go.string."create.html" ª'   /qª'   *±'     ±'      '    ‘+q,­'      „ q0"".createtpl ­'   ‘0q.ª'      ­'   Ž­'   ‘q1­'      Ž­'   •   q1q W      u‘ q	ª W     ª W     „ q1type.string 6    ‘q1   u6    ‘-q.   u„ q"".viewtplerr „ qtype.os.Error 6    ‘q   u6 '   ‘0q.   u6 '   ‘q   u6 W   ‘ q	   u„ qtype.*runtime.FuncType - W   oqq x- W   o   qq    x- W   o   q   u- W   o   q¢mËu- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func() string" - W   o    qq x„ qweak.type.*func() string - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   qu- W   oL   qu- W   oP   qq `   x- W   oX   q   u- W   o\   q   u- W   o`   qq 1x6 W   o
+qh   u- W   oqq x- W   o   qq    x- W   o   q   u- W   o   qEMü¨ç    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(string) string" - W   o    qq x„ qweak.type.*func(string) string - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq h   x- W   oX   q   u- W   o\   q   u- W   o`   qq 1x- W   oh   qq 1x6 W   o
+qp   u„ qtype.func(os.Error) - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qE·þ¯    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ q	go.string."func(os.Error)" - W   o    qq 	x„ q
+weak.type.*func(os.Error) - W   o0   qq 
+x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq h   x- W   oX   qu- W   o\   qu- W   o`   qq x6 W   o
+qh   u„ qtype.interface { } „ qtype.*runtime.InterfaceType - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qEô¤Bó    u- W   o   q   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."interface { }" - W   o    qq x„ qweak.type.*interface { } - W   o0   qq x- W   o8   qq H   x- W   o@   qu- W   oD   qu6 W   o
+qH   u„ qtype.func(os.Error) interface { } - W   oqq x- W   o   qq    x- W   o   q   u- W   o   q%äu- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(os.Error) interface { }" - W   o    qq x„ qweak.type.*func(os.Error) interface { } - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq h   x- W   oX   q   u- W   o\   q   u- W   o`   qq x- W   oh   qq x6 W   o
+qp   u„ qtype.func(interface { }) - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qE§€’·    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(interface { })" - W   o    qq x„ qweak.type.*func(interface { }) - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq h   x- W   oX   qu- W   o\   qu- W   o`   qq x6 W   o
+qh   u„ qtype."".Page „ qtype.*runtime.StructType - W   oqq x- W   o   qq    x- W   o   q    u- W   o   qEH–òõ    u- W   o   q   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."main.Page" - W   o    qq x„ qtype.*"".Page - W   o0   qq x- W   o8   qq H   x- W   o@   q   u- W   oD   q   u„ qgo.string."Title" - W   oH   qq x- W   oP   qu- W   oX   qq 1x- W   o`   qu- W   oh   qu„ qgo.string."Body" - W   op   qq x- W   ox   qu- W   o€   qq 1x- W   oˆ   qu- W   o   q   u- W   o(   qq ˜   x„ qgo.string."Page" - W   o˜   qq x„ qgo.importpath."". - W   o    qq x- W   o¨   qq ¸   x- W   o°   qu- W   o´   qu6 W   oq¸   u„ qtype.*runtime.PtrType - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qE¦¯»    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."*main.Page" - W   o    qq x„ qweak.type.**"".Page - W   o0   qq x- W   o8   qq x6 W   oq@   u„ q type.func(string) (*launchpad%2enet/mgo.Session, os.Error) - W   o qq x- W   o    qq     x- W   o    q   u- W   o    qE×e¡    u- W   o    q	   u- W   o    q   u- W   o    q   u- W   o    q   u„ q!go.string."func(string) (*mgo.Session, os.Error)" - W   o     qq !x„ q"weak.type.*func(string) (*launchpad%2enet/mgo.Session, os.Error) - W   o0    qq "x- W   o8    qu- W   o@    qq `    x- W   oH    q   u- W   oL    q   u- W   oP    qq h    x- W   oX    q   u- W   o\    q   u- W   o`    qq 1x„ q#type.*launchpad%2enet/mgo.Session - W   oh    qq #x- W   op    qq x6 W   o
+ qx   u„ q$type.func(*launchpad%2enet/mgo.Session, string) (*"".Page, os.Error) - W   o$qq x- W   o   $qq    $x- W   o   $q   u- W   o   $q|neu- W   o   $q	   u- W   o   $q   u- W   o   $q   u- W   o   $q   u„ q%go.string."func(*mgo.Session, string) (*main.Page, os.Error)" - W   o    $qq %x„ q&weak.type.*func(*launchpad%2enet/mgo.Session, string) (*"".Page, os.Error) - W   o0   $qq &x- W   o8   $qu- W   o@   $qq `   $x- W   oH   $q   u- W   oL   $q   u- W   oP   $qq p   $x- W   oX   $q   u- W   o\   $q   u- W   o`   $qq #x- W   oh   $qq 1x- W   op   $qq x- W   ox   $qq x6 W   o
+$q€   u„ q'type.[]uint8 „ q(type.*runtime.SliceType - W   o'qq (x- W   o   'qq    'x- W   o   'q   u- W   o   'qß~.8u- W   o   'q   u- W   o   'q   u- W   o   'q   u- W   o   'q   u„ q)go.string."[]uint8" - W   o    'qq )x„ q*weak.type.*[]uint8 - W   o0   'qq *x„ q+type.uint8 - W   o8   'qq +x6 W   o
+'q@   u„ q,type.func(string) []uint8 - W   o,qq x- W   o   ,qq    ,x- W   o   ,q   u- W   o   ,qEEÁ'ô    u- W   o   ,q	   u- W   o   ,q   u- W   o   ,q   u- W   o   ,q   u„ q-go.string."func(string) []uint8" - W   o    ,qq -x„ q.weak.type.*func(string) []uint8 - W   o0   ,qq .x- W   o8   ,qu- W   o@   ,qq `   ,x- W   oH   ,q   u- W   oL   ,q   u- W   oP   ,qq h   ,x- W   oX   ,q   u- W   o\   ,q   u- W   o`   ,qq 1x- W   oh   ,qq 'x6 W   o
+,qp   u„ q/type.func([]uint8) []uint8 - W   o/qq x- W   o   /qq    /x- W   o   /q   u- W   o   /q›ëž&u- W   o   /q	   u- W   o   /q   u- W   o   /q   u- W   o   /q   u„ q0go.string."func([]uint8) []uint8" - W   o    /qq 0x„ q1weak.type.*func([]uint8) []uint8 - W   o0   /qq 1x- W   o8   /qu- W   o@   /qq `   /x- W   oH   /q   u- W   oL   /q   u- W   oP   /qq h   /x- W   oX   /q   u- W   o\   /q   u- W   o`   /qq 'x- W   oh   /qq 'x6 W   o
+/qp   u„ qtype.func([]uint8) string - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qôÎÈ2u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func([]uint8) string" - W   o    qq x„ qweak.type.*func([]uint8) string - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq h   x- W   oX   q   u- W   o\   q   u- W   o`   qq 'x„ qtype.string - W   oh   qq x6 W   o
+qp   u„ qtype.[]interface { } - W   oqq (x- W   o   qq    x- W   o   q   u- W   o   q6ûýlu- W   o   q   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."[]interface { }" - W   o    qq x„ qweak.type.*[]interface { } - W   o0   qq x- W   o8   qq x6 W   o
+q@   u„ qtype.[1]interface { } „ q	type.*runtime.ArrayType - W   oqq 	x- W   o   qq    x- W   o   q   u- W   o   qEÝcÏç    u- W   o   q   u- W   o   q   u- W   o   q   u- W   o   q   u„ q
+go.string."[1]interface { }" - W   o    qq 
+x„ qweak.type.*[1]interface { } - W   o0   qq x„ qtype.interface { } - W   o8   qq x- W   o@   qq x- W   oH   q   u6 W   o
+qP   u„ qtype.*[1]interface { } - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qVDÀ_u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."*[1]interface { }" - W   o    qq x„ qweak.type.**[1]interface { } - W   o0   qq x- W   o8   qq x6 W   o
+q@   u„ qtype.func(int32) *[1]interface { } „ qtype.*runtime.FuncType - W   oqq x- W   o   qq    x- W   o   q   u- W   o   q:Ÿu- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(int32) *[1]interface { }" - W   o    qq x„ qweak.type.*func(int32) *[1]interface { } - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq h   x- W   oX   q   u- W   o\   q   u„ qtype.int32 - W   o`   qq x- W   oh   qq x6 W   o
+qp   u„ qtype.func(*uint8, *"".Page) interface { } - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qFNQu- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(*uint8, *main.Page) interface { }" - W   o    qq x„ qweak.type.*func(*uint8, *"".Page) interface { } - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq p   x- W   oX   q   u- W   o\   q   u„ qtype.*uint8 - W   o`   qq x„ qtype.*"".Page - W   oh   qq x- W   op   qq x6 W   o
+qx   u„ qtype.func(int32) *"".Page - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qE¬\›    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(int32) *main.Page" - W   o    qq x„ qweak.type.*func(int32) *"".Page - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq h   x- W   oX   q   u- W   o\   q   u- W   o`   qq x- W   oh   qq x6 W   o
+qp   u„ qtype.map[string] interface { } „ qtype.*runtime.MapType - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qEdŠÁæ    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."map[string] interface { }" - W   o    qq x„ q weak.type.*map[string] interface { } - W   o0   qq  x- W   o8   qq x- W   o@   qq x6 W   o
+qH   u„ q!type.func(*uint8, int64) map[string] interface { } - W   o!qq x- W   o   !qq    !x- W   o   !q   u- W   o   !qE.”'î    u- W   o   !q	   u- W   o   !q   u- W   o   !q   u- W   o   !q   u„ q"go.string."func(*uint8, int64) map[string] interface { }" - W   o    !qq "x„ q#weak.type.*func(*uint8, int64) map[string] interface { } - W   o0   !qq #x- W   o8   !qu- W   o@   !qq `   !x- W   oH   !q   u- W   oL   !q   u- W   oP   !qq p   !x- W   oX   !q   u- W   o\   !q   u- W   o`   !qq x„ q$type.int64 - W   oh   !qq $x- W   op   !qq x6 W   o
+!qx   u„ q%type.func(*uint8, string) interface { } - W   o%qq x- W   o   %qq    %x- W   o   %q   u- W   o   %qEï¤)¤    u- W   o   %q	   u- W   o   %q   u- W   o   %q   u- W   o   %q   u„ q&go.string."func(*uint8, string) interface { }" - W   o    %qq &x„ q'weak.type.*func(*uint8, string) interface { } - W   o0   %qq 'x- W   o8   %qu- W   o@   %qq `   %x- W   oH   %q   u- W   oL   %q   u- W   oP   %qq p   %x- W   oX   %q   u- W   o\   %q   u- W   o`   %qq x- W   oh   %qq x- W   op   %qq x6 W   o
+%qx   u„ q(type.func(*uint8, map[string] interface { }, string, interface { }) - W   o(qq x- W   o   (qq    (x- W   o   (q   u- W   o   (qE_oó    u- W   o   (q	   u- W   o   (q   u- W   o   (q   u- W   o   (q   u„ q)go.string."func(*uint8, map[string] interface { }, string, interface { })" - W   o    (qq )x„ q*weak.type.*func(*uint8, map[string] interface { }, string, interface { }) - W   o0   (qq *x- W   o8   (qu- W   o@   (qq `   (x- W   oH   (q   u- W   oL   (q   u- W   oP   (qq €   (x- W   oX   (qu- W   o\   (qu- W   o`   (qq x- W   oh   (qq x- W   op   (qq x- W   ox   (qq x6 W   o
+(q€   u„ q+type.func(*uint8, launchpad%2enet/gobson/bson.M) interface { } - W   o+qq x- W   o   +qq    +x- W   o   +q   u- W   o   +qE%Dõ    u- W   o   +q	   u- W   o   +q   u- W   o   +q   u- W   o   +q   u„ q,go.string."func(*uint8, bson.M) interface { }" - W   o    +qq ,x„ q-weak.type.*func(*uint8, launchpad%2enet/gobson/bson.M) interface { } - W   o0   +qq -x- W   o8   +qu- W   o@   +qq `   +x- W   oH   +q   u- W   oL   +q   u- W   oP   +qq p   +x- W   oX   +q   u- W   o\   +q   u- W   o`   +qq x„ q.type.launchpad%2enet/gobson/bson.M - W   oh   +qq .x- W   op   +qq x6 W   o
++qx   u„ q/type.func(os.Error, os.Error) bool - W   o/qq x- W   o   /qq    /x- W   o   /q   u- W   o   /q¸J4^u- W   o   /q	   u- W   o   /q   u- W   o   /q   u- W   o   /q   u„ q0go.string."func(os.Error, os.Error) bool" - W   o    /qq 0x„ q1weak.type.*func(os.Error, os.Error) bool - W   o0   /qq 1x- W   o8   /qu- W   o@   /qq `   /x- W   oH   /q   u- W   oL   /q   u- W   oP   /qq p   /x- W   oX   /q   u- W   o\   /q   u„ qtype.os.Error - W   o`   /qq x- W   oh   /qq x„ qtype.bool - W   op   /qq x6 W   o
+/qx   u„ qtype.map[string] string - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qèúu- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."map[string] string" - W   o    qq x„ qweak.type.*map[string] string - W   o0   qq x„ qtype.string - W   o8   qq x- W   o@   qq x6 W   o
+qH   u„ qtype.func(*github%2ecom/hoisie/web%2ego.Context, string) - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qâ[ u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(*web.Context, string)" - W   o    qq x„ q	weak.type.*func(*github%2ecom/hoisie/web%2ego.Context, string) - W   o0   qq 	x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq p   x- W   oX   qu- W   o\   qu„ q
+type.*github%2ecom/hoisie/web%2ego.Context - W   o`   qq 
+x- W   oh   qq x6 W   o
+qp   u„ qtype.func(*uint8, map[string] string, string) string - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qEÎ®¤    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(*uint8, map[string] string, string) string" - W   o    qq x„ qweak.type.*func(*uint8, map[string] string, string) string - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq x   x- W   oX   q   u- W   o\   q   u- W   o`   qq x- W   oh   qq x- W   op   qq x- W   ox   qq x6 W   o
+q€   u„ qtype.func(string, string) int - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qE6Ì    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(string, string) int" - W   o    qq x„ qweak.type.*func(string, string) int - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq p   x- W   oX   q   u- W   o\   q   u- W   o`   qq x- W   oh   qq x„ qtype.int - W   op   qq x6 W   o
+qx   u„ qtype.func(int, string, string) string „ qtype.*runtime.FuncType - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qE`—ÅØ    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(int, string, string) string" - W   o    qq x„ qweak.type.*func(int, string, string) string - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq x   x- W   oX   q   u- W   o\   q   u- W   o`   qq x- W   oh   qq x- W   op   qq x- W   ox   qq x6 W   o
+q€   u„ qtype.func() - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qEö¼‚ö    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func()" - W   o    qq x„ qweak.type.*func() - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   qu- W   oL   qu- W   oP   qq `   x- W   oX   qu- W   o\   qu6 W   o
+q`   u„ qtype.[]string „ qtype.*runtime.SliceType - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qÓ¨ó
+u- W   o   q   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."[]string" - W   o    qq x„ qweak.type.*[]string - W   o0   qq x- W   o8   qq x6 W   o
+q@   u„ qtype.func(*uint8, func() string) interface { } - W   oqq x- W   o   qq    x- W   o   q   u- W   o   qEÂMK›    u- W   o   q	   u- W   o   q   u- W   o   q   u- W   o   q   u„ qgo.string."func(*uint8, func() string) interface { }" - W   o    qq x„ qweak.type.*func(*uint8, func() string) interface { } - W   o0   qq x- W   o8   qu- W   o@   qq `   x- W   oH   q   u- W   oL   q   u- W   oP   qq p   x- W   oX   q   u- W   o\   q   u„ q type.*uint8 - W   o`   qq  x„ q!type.func() string - W   oh   qq !x„ q"type.interface { } - W   op   qq "x6 W   o
+qx   u„ q#type.func(string, interface { }) - W   o#qq x- W   o   #qq    #x- W   o   #q   u- W   o   #q½;;Qu- W   o   #q	   u- W   o   #q   u- W   o   #q   u- W   o   #q   u„ q$go.string."func(string, interface { })" - W   o    #qq $x„ q%weak.type.*func(string, interface { }) - W   o0   #qq %x- W   o8   #qu- W   o@   #qq `   #x- W   oH   #q   u- W   oL   #q   u- W   oP   #qq p   #x- W   oX   #qu- W   o\   #qu- W   o`   #qq x- W   oh   #qq "x6 W   o
+#qp   u„ q&type.func(*uint8, func(string) string) interface { } - W   o&qq x- W   o   &qq    &x- W   o   &q   u- W   o   &qm0u- W   o   &q	   u- W   o   &q   u- W   o   &q   u- W   o   &q   u„ q'go.string."func(*uint8, func(string) string) interface { }" - W   o    &qq 'x„ q(weak.type.*func(*uint8, func(string) string) interface { } - W   o0   &qq (x- W   o8   &qu- W   o@   &qq `   &x- W   oH   &q   u- W   oL   &q   u- W   oP   &qq p   &x- W   oX   &q   u- W   o\   &q   u- W   o`   &qq  x„ q)type.func(string) string - W   oh   &qq )x- W   op   &qq "x6 W   o
+&qx   u„ q*type.func(*uint8, func(*github%2ecom/hoisie/web%2ego.Context, string)) interface { } - W   o*qq x- W   o   *qq    *x- W   o   *q   u- W   o   *qB)¥'u- W   o   *q	   u- W   o   *q   u- W   o   *q   u- W   o   *q   u„ q+go.string."func(*uint8, func(*web.Context, string)) interface { }" - W   o    *qq +x„ q,weak.type.*func(*uint8, func(*github%2ecom/hoisie/web%2ego.Context, string)) interface { } - W   o0   *qq ,x- W   o8   *qu- W   o@   *qq `   *x- W   oH   *q   u- W   oL   *q   u- W   oP   *qq p   *x- W   oX   *q   u- W   o\   *q   u- W   o`   *qq  x- W   oh   *qq x- W   op   *qq "x6 W   o
+*qx   u„ q-type.func(string) - W   o-qq x- W   o   -qq    -x- W   o   -q   u- W   o   -qEŠÇ¹¾    u- W   o   -q	   u- W   o   -q   u- W   o   -q   u- W   o   -q   u„ q.go.string."func(string)" - W   o    -qq .x„ q/weak.type.*func(string) - W   o0   -qq /x- W   o8   -qu- W   o@   -qq `   -x- W   oH   -q   u- W   oL   -q   u- W   oP   -qq h   -x- W   oX   -qu- W   o\   -qu- W   o`   -qq x6 W   o
+-qh   u„ q0type.func(string) (*github%2ecom/hoisie/mustache%2ego.Template, os.Error) - W   o0qq x- W   o   0qq    0x- W   o   0q   u- W   o   0qE¾1å²    u- W   o   0q	   u- W   o   0q   u- W   o   0q   u- W   o   0q   u„ q1go.string."func(string) (*mustache.Template, os.Error)" - W   o    0qq 1x„ qweak.type.*func(string) (*github%2ecom/hoisie/mustache%2ego.Template, os.Error) - W   o0   0qq x- W   o8   0qu- W   o@   0qq `   0x- W   oH   0q   u- W   oL   0q   u- W   oP   0qq h   0x- W   oX   0q   u- W   o\   0q   u- W   o`   0qq x„ qtype.*github%2ecom/hoisie/mustache%2ego.Template - W   oh   0qq x„ qtype.os.Error - W   op   0qq x6 W   o
+0qx   u„ qgo.importpath.github%2ecom/hoisie/web%2ego. „ qgo.string."github.com/hoisie/web.go" - W   oqq    x- W   o   q   u6 W   o
+q   u„ qgo.importpath.runtime. „ qgo.string."runtime" - W   oqq    x- W   o   q   u6 W   o
+q   u„ qgo.importpath.github%2ecom/hoisie/mustache%2ego. „ q	go.string."github.com/hoisie/mustache.go" - W   oqq    	x- W   o   q   u6 W   o
+q   u„ q
+go.importpath.github%2ecom/russross/blackfriday. „ qgo.string."github.com/russross/blackfriday" - W   o
+qq    x- W   o   
+q   u6 W   o
+
+q   u„ qgo.importpath.html. „ qgo.string."html" - W   oqq    x- W   o   q   u6 W   o
+q   u„ qgo.importpath.os. „ qgo.string."os" - W   oqq    x- W   o   q   u6 W   o
+q   u„ qgo.importpath.launchpad%2enet/gobson/bson. „ qgo.string."launchpad.net/gobson/bson" - W   oqq    x- W   o   q   u6 W   o
+q   u„ qgo.importpath.launchpad%2enet/mgo. „ qgo.string."launchpad.net/mgo" - W   oqq    x- W   o   q   u6 W   o
+q   u„ qgo.string."index" -    oqq    x-    o   q   u-    o   q index   -    o   qu6    o
+q   u„ qgo.string."localhost" -    oqq    x-    o   q	   u-    o   q localhos-    o   q t       -    o   qu6    o
+q   u„ qgo.string."gwiki" - +   oqq    x- +   o   q   u- +   o   q gwiki   - +   o   qu6 +   o
+q   u„ qgo.string."pages" - +   oqq    x- +   o   q   u- +   o   q pages   - +   o   qu6 +   o
+q   u„ qgo.string."title" - ,   oqq    x- ,   o   q   u- ,   o   q title   - ,   o   qu6 ,   o
+q   u„ qgo.string."Invalid params" - >   oqq    x- >   o   q   u- >   o   q Invalid - >   o   q params  - >   o   qu6 >   o
+q    u„ qgo.string."body" - I   oqq    x- I   o   q   u- I   o   q body    - I   o   qu6 I   o
+q   u„ qgo.string."/view/" - L   oqq    x- L   o   q   u- L   o   q /view/  - L   o   qu6 L   o
+q   u„ qgo.string."/" - R   oqq    x- R   o   q   u- R   o   q /       - R   o   qu6 R   o
+q   u„ qgo.string."/view/(.*)" - S   oqq    x- S   o   q
+   u- S   o   q /view/(.- S   o   q *)      - S   o   qu6 S   o
+q   u„ qgo.string."/edit/(.*)" - T   oqq    x- T   o   q
+   u- T   o   q /edit/(.- T   o   q *)      - T   o   qu6 T   o
+q   u„ qgo.string.":" - V   oqq    x- V   o   q   u- V   o   q :       - V   o   qu6 V   o
+q   u„ q go.string."view.html" -    o qq     x-    o    q	   u-    o    q view.htm-    o    q l       -    o    qu6    o
+ q   u„ q!go.string."create.html" - '   o!qq    !x- '   o   !q   u- '   o   !q create.h- '   o   !q tml     - '   o   !qu6 '   o
+!q   u„ q"go.string."func() string" - W   o"qq    "x- W   o   "q   u- W   o   "q func() s- W   o   "q tring   - W   o   "qu6 W   o
+"q    u„ q#go.string."func(string) string" - W   o#qq    #x- W   o   #q   u- W   o   #q func(str- W   o   #q ing) str- W   o   #q ing     - W   o   #qu6 W   o
+#q    u„ q$go.string."func(os.Error)" - W   o$qq    $x- W   o   $q   u- W   o   $q func(os.- W   o   $q Error)  - W   o   $qu6 W   o
+$q    u„ q%go.string."interface { }" - W   o%qq    %x- W   o   %q   u- W   o   %q interfac- W   o   %q e { }   - W   o   %qu6 W   o
+%q    u„ q&go.string."func(os.Error) interface { }" - W   o&qq    &x- W   o   &q   u- W   o   &q func(os.- W   o   &q Error) i- W   o   &q nterface- W   o$   &q  { }    - W   o(   &qu6 W   o
+&q0   u„ q'go.string."func(interface { })" - W   o'qq    'x- W   o   'q   u- W   o   'q func(int- W   o   'q erface {- W   o   'q  })     - W   o   'qu6 W   o
+'q    u„ q(go.string."main.Page" - W   o(qq    (x- W   o   (q	   u- W   o   (q main.Pag- W   o   (q e       - W   o   (qu6 W   o
+(q   u„ q)go.string."Title" - W   o)qq    )x- W   o   )q   u- W   o   )q Title   - W   o   )qu6 W   o
+)q   u„ q*go.string."Body" - W   o*qq    *x- W   o   *q   u- W   o   *q Body    - W   o   *qu6 W   o
+*q   u„ q+go.string."Page" - W   o+qq    +x- W   o   +q   u- W   o   +q Page    - W   o   +qu6 W   o
++q   u„ q,go.string."*main.Page" - W   o,qq    ,x- W   o   ,q
+   u- W   o   ,q *main.Pa- W   o   ,q ge      - W   o   ,qu6 W   o
+,q   u„ q-go.string."func(string) (*mgo.Session, os.Error)" - W   o-qq    -x- W   o   -q%   u- W   o   -q func(str- W   o   -q ing) (*m- W   o   -q go.Sessi- W   o$   -q on, os.E- W   o,   -q rror)   - W   o1   -qu6 W   o
+-q8   u„ q.go.string."func(*mgo.Session, string) (*main.Page, os.Error)" - W   o.qq    .x- W   o   .q1   u- W   o   .q func(*mg- W   o   .q o.Sessio- W   o   .q n, strin- W   o$   .q g) (*mai- W   o,   .q n.Page, - W   o4   .q os.Error- W   o<   .q )       - W   o=   .qu6 W   o
+.q@   u„ q/go.string."[]uint8" - W   o/qq    /x- W   o   /q   u- W   o   /q []uint8 - W   o   /qu6 W   o
+/q   u„ q0go.string."func(string) []uint8" - W   o0qq    0x- W   o   0q   u- W   o   0q func(str- W   o   0q ing) []u- W   o   0q int8    - W   o    0qu6 W   o
+0q(   u„ q1go.string."func([]uint8) []uint8" - W   o1qq    1x- W   o   1q   u- W   o   1q func([]u- W   o   1q int8) []- W   o   1q uint8   - W   o!   1qu6 W   o
+1q(   u„ qgo.string."func([]uint8) string" - W   oqq    x- W   o   q   u- W   o   q func([]u- W   o   q int8) st- W   o   q ring    - W   o    qu6 W   o
+q(   u„ qgo.string."[]interface { }" - W   oqq    x- W   o   q   u- W   o   q []interf- W   o   q ace { } - W   o   qu6 W   o
+q    u„ qgo.string."[1]interface { }" - W   oqq    x- W   o   q   u- W   o   q [1]inter- W   o   q face { }- W   o   qu6 W   o
+q    u„ qgo.string."*[1]interface { }" - W   oqq    x- W   o   q   u- W   o   q *[1]inte- W   o   q rface { - W   o   q }       - W   o   qu6 W   o
+q    u„ qgo.string."func(int32) *[1]interface { }" - W   oqq    x- W   o   q   u- W   o   q func(int- W   o   q 32) *[1]- W   o   q interfac- W   o$   q e { }   - W   o)   qu6 W   o
+q0   u„ qgo.string."func(*uint8, *main.Page) interface { }" - W   oqq    x- W   o   q&   u- W   o   q func(*ui- W   o   q nt8, *ma- W   o   q in.Page)- W   o$   q  interfa- W   o,   q ce { }  - W   o2   qu6 W   o
+q8   u„ qgo.string."func(int32) *main.Page" - W   oqq    x- W   o   q   u- W   o   q func(int- W   o   q 32) *mai- W   o   q n.Page  - W   o"   qu6 W   o
+q(   u„ qgo.string."map[string] interface { }" - W   oqq    x- W   o   q   u- W   o   q map[stri- W   o   q ng] inte- W   o   q rface { - W   o$   q }       - W   o%   qu6 W   o
+q(   u„ q	go.string."func(*uint8, int64) map[string] interface { }" - W   o	qq    	x- W   o   	q-   u- W   o   	q func(*ui- W   o   	q nt8, int- W   o   	q 64) map[- W   o$   	q string] - W   o,   	q interfac- W   o4   	q e { }   - W   o9   	qu6 W   o
+	q@   u„ q
+go.string."func(*uint8, string) interface { }" - W   o
+qq    
+x- W   o   
+q"   u- W   o   
+q func(*ui- W   o   
+q nt8, str- W   o   
+q ing) int- W   o$   
+q erface {- W   o,   
+q  }      - W   o.   
+qu6 W   o
+
+q0   u„ qgo.string."func(*uint8, map[string] interface { }, string, interface { })" - W   oqq    x- W   o   q>   u- W   o   q func(*ui- W   o   q nt8, map- W   o   q [string]- W   o$   q  interfa- W   o,   q ce { }, - W   o4   q string, - W   o<   q interfac- W   oD   q e { })  - W   oJ   qu6 W   o
+qP   u„ qgo.string."func(*uint8, bson.M) interface { }" - W   oqq    x- W   o   q"   u- W   o   q func(*ui- W   o   q nt8, bso- W   o   q n.M) int- W   o$   q erface {- W   o,   q  }      - W   o.   qu6 W   o
+q0   u„ qgo.string."func(os.Error, os.Error) bool" - W   oqq    x- W   o   q   u- W   o   q func(os.- W   o   q Error, o- W   o   q s.Error)- W   o$   q  bool   - W   o)   qu6 W   o
+q0   u„ qgo.string."map[string] string" - W   oqq    x- W   o   q   u- W   o   q map[stri- W   o   q ng] stri- W   o   q ng      - W   o   qu6 W   o
+q    u„ qgo.string."func(*web.Context, string)" - W   oqq    x- W   o   q   u- W   o   q func(*we- W   o   q b.Contex- W   o   q t, strin- W   o$   q g)      - W   o&   qu6 W   o
+q(   u„ qgo.string."func(*uint8, map[string] string, string) string" - W   oqq    x- W   o   q/   u- W   o   q func(*ui- W   o   q nt8, map- W   o   q [string]- W   o$   q  string,- W   o,   q  string)- W   o4   q  string - W   o;   qu6 W   o
+q@   u„ qgo.string."func(string, string) int" - W   oqq    x- W   o   q   u- W   o   q func(str- W   o   q ing, str- W   o   q ing) int- W   o$   qu6 W   o
+q(   u„ qgo.string."func(int, string, string) string" - W   oqq    x- W   o   q    u- W   o   q func(int- W   o   q , string- W   o   q , string- W   o$   q ) string- W   o,   qu6 W   o
+q0   u„ qgo.string."func()" - W   oqq    x- W   o   q   u- W   o   q func()  - W   o   qu6 W   o
+q   u„ qgo.string."[]string" - W   oqq    x- W   o   q   u- W   o   q []string- W   o   qu6 W   o
+q   u„ qgo.string."func(*uint8, func() string) interface { }" - W   oqq    x- W   o   q)   u- W   o   q func(*ui- W   o   q nt8, fun- W   o   q c() stri- W   o$   q ng) inte- W   o,   q rface { - W   o4   q }       - W   o5   qu6 W   o
+q8   u„ qgo.string."func(string, interface { })" - W   oqq    x- W   o   q   u- W   o   q func(str- W   o   q ing, int- W   o   q erface {- W   o$   q  })     - W   o'   qu6 W   o
+q(   u„ qgo.string."func(*uint8, func(string) string) interface { }" - W   oqq    x- W   o   q/   u- W   o   q func(*ui- W   o   q nt8, fun- W   o   q c(string- W   o$   q ) string- W   o,   q ) interf- W   o4   q ace { } - W   o;   qu6 W   o
+q@   u„ qgo.string."func(*uint8, func(*web.Context, string)) interface { }" - W   oqq    x- W   o   q6   u- W   o   q func(*ui- W   o   q nt8, fun- W   o   q c(*web.C- W   o$   q ontext, - W   o,   q string))- W   o4   q  interfa- W   o<   q ce { }  - W   oB   qu6 W   o
+qH   u„ qgo.string."func(string)" - W   oqq    x- W   o   q   u- W   o   q func(str- W   o   q ing)    - W   o   qu6 W   o
+q    u„ qgo.string."func(string) (*mustache.Template, os.Error)" - W   oqq    x- W   o   q+   u- W   o   q func(str- W   o   q ing) (*m- W   o   q ustache.- W   o$   q Template- W   o,   q , os.Err- W   o4   q or)     - W   o7   qu6 W   o
+q8   u„ qgo.string."github.com/hoisie/web.go" - W   oqq    x- W   o   q   u- W   o   q github.c- W   o   q om/hoisi- W   o   q e/web.go- W   o$   qu6 W   o
+q(   u„ qgo.string."runtime" - W   oqq    x- W   o   q   u- W   o   q runtime - W   o   qu6 W   o
+q   u„ qgo.string."github.com/hoisie/mustache.go" - W   oqq    x- W   o   q   u- W   o   q github.c- W   o   q om/hoisi- W   o   q e/mustac- W   o$   q he.go   - W   o)   qu6 W   o
+q0   u„ qgo.string."github.com/russross/blackfriday" - W   oqq    x- W   o   q   u- W   o   q github.c- W   o   q om/russr- W   o   q oss/blac- W   o$   q kfriday - W   o+   qu6 W   o
+q0   u„ qgo.string."html" - W   oqq    x- W   o   q   u- W   o   q html    - W   o   qu6 W   o
+q   u„ q go.string."os" - W   o qq     x- W   o    q   u- W   o    q os      - W   o    qu6 W   o
+ q   u„ q!go.string."launchpad.net/gobson/bson" - W   o!qq    !x- W   o   !q   u- W   o   !q launchpa- W   o   !q d.net/go- W   o   !q bson/bso- W   o$   !q n       - W   o%   !qu6 W   o
+!q(   u„ q"go.string."launchpad.net/mgo" - W   o"qq    "x- W   o   "q   u- W   o   "q launchpa- W   o   "q d.net/mg- W   o   "q o       - W   o   "qu6 W   o
+"q    uP      
