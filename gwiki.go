@@ -38,6 +38,7 @@ func view(title string) string {
 	defer session.Close()
 	result, err := getPage(session, title)
 	check(err)
+	result.Body = html.EscapeString(result.Body)
 	result.Body = string(blackfriday.MarkdownCommon([]byte(result.Body)))
 	return viewtpl.Render(result)
 }
@@ -76,7 +77,7 @@ func create(c *web.Context, title string) {
 	} else {
 		check(err)
 	}
-	res := &Page{Title: title, Body: html.EscapeString(c.Params["body"])}
+	res := &Page{Title: title, Body: c.Params["body"]}
 	db := session.DB(dbname).C("pages")
 	db.Upsert(result, res)
 	c.Redirect(302, "/view/"+title)
