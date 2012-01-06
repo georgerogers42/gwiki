@@ -8,8 +8,10 @@ import (
 	"launchpad.net/gobson/bson"
 	"html"
 	"os"
+	"url"
 )
-var server string
+var dbname = "gwiki"
+var server = "localhost"
 var viewtpl, viewtplerr = mustache.ParseFile("view.html")
 
 func index() string {
@@ -40,7 +42,7 @@ var createtpl, createtplerr = mustache.ParseFile("create.html")
 
 func getPage(session *mgo.Session, title string) (result *Page, err os.Error) {
 	result = new(Page)
-	c := session.DB("gwiki").C("pages")
+	c := session.DB(dbname).C("pages")
 	err = c.Find(bson.M{"title": title}).One(result)
 	return
 }
@@ -71,14 +73,18 @@ func create(c *web.Context, title string) {
 		check(err)
 	}
 	res := &Page{Title: title, Body: html.EscapeString(c.Params["body"])}
-	db := session.DB("gwiki").C("pages")
+	db := session.DB(dbname).C("pages")
 	db.Upsert(result, res)
 	c.Redirect(302, "/view/"+title)
 }
 func main() {
 	check(viewtplerr)
 	check(createtplerr)
-	server = os.Args[2]
+	s := os.Args[2]
+	x, err := url.Parse(s)
+	check(err)
+	dbname = x.Path[1:]
+	server = x.Host
 	web.Get("/", index)
 	web.Get("/view/(.*)", view)
 	web.Get("/edit/(.*)", edit)
