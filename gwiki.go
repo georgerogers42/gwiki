@@ -15,11 +15,11 @@ var dbname = "gwiki"
 var server = "localhost"
 var viewtpl, viewtplerr = mustache.ParseFile("view.html")
 
-func index(page string) string {
+func index(c *web.Context, page string) {
 	if page == "" {
 		page = "index"
 	}
-	return view(page)
+	c.Redirect(302, "/view/"+page)
 }
 
 type Page struct {
@@ -34,8 +34,8 @@ func check(e os.Error) {
 }
 func view(title string) string {
 	session, err := mgo.Mongo(server)
-	defer session.Close()
 	check(err)
+	defer session.Close()
 	result, err := getPage(session, title)
 	check(err)
 	result.Body = string(blackfriday.MarkdownCommon([]byte(result.Body)))
@@ -89,7 +89,7 @@ func main() {
 	check(err)
 	dbname = x.Path[1:]
 	server = s
-	web.Get("/(.*)", index)
+	web.Get("/([^/]*)", index)
 	web.Get("/view/(.*)", view)
 	web.Get("/edit/(.*)", edit)
 	web.Post("/edit/(.*)", create)
