@@ -27,7 +27,7 @@ func check(e os.Error) {
 	}
 }
 func view(title string) string {
-	session, err := mgo.Mongo("localhost")
+	session, err := mgo.Mongo(server)
 	defer session.Close()
 	check(err)
 	result, err := getPage(session, title)
@@ -46,7 +46,7 @@ func getPage(session *mgo.Session, title string) (result *Page, err os.Error) {
 }
 
 func edit(title string) string {
-	session, err := mgo.Mongo("localhost")
+	session, err := mgo.Mongo(server)
 	check(err)
 	defer session.Close()
 	result, err := getPage(session, title)
@@ -61,7 +61,7 @@ func create(c *web.Context, title string) {
 	if title != c.Params["title"] {
 		panic("Invalid params")
 	}
-	session, err := mgo.Mongo("localhost")
+	session, err := mgo.Mongo(server)
 	defer session.Close()
 	check(err)
 	result, err := getPage(session, title)
