@@ -1,25 +1,31 @@
 package main
 
 import (
-	"github.com/hoisie/web.go"
-	"github.com/hoisie/mustache.go"
 	"github.com/russross/blackfriday"
-	"launchpad.net/mgo"
-	"launchpad.net/gobson/bson"
 	"html"
+	"html/template"
+	"launchpad.net/gobson/bson"
+	"launchpad.net/mgo"
+	"net/http"
+	"net/url"
 	"os"
-	"url"
+	"regexp"
 )
 
 var dbname = "gwiki"
 var server = "localhost"
-var viewtpl, viewtplerr = mustache.ParseFile("view.html")
+var viewtpl = template.New("view.html")
 
-func index(c *web.Context, page string) {
+func index(w http.ResponseWriter, r *http.Request) {
+	rx := regexp.MustCompile("/(\\w+)$")
+	page := "index"
+	if x := rx.FindStringSubmatch(r.URL.Path); x != nil {
+		page = x[1]
+	}
 	if page == "" {
 		page = "index"
 	}
-	c.Redirect(302, "/view/"+page)
+	http.Redirect(w, r, "/view/"+page, 302)
 }
 
 type Page struct {
@@ -27,12 +33,18 @@ type Page struct {
 	Body  string
 }
 
-func check(e os.Error) {
+func check(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
-func view(title string) string {
+
+func view(w http.ResponseWriter, c *http.Request) {
+	r := regexp.MustCompile("/(\\w+)$")
+	title := "index"
+	if x := r.FindStringSubmatch(c.URL.Path); x != nil {
+		title = x[1]
+	}
 	session, err := mgo.Mongo(server)
 	check(err)
 	defer session.Close()
@@ -40,59 +52,46 @@ func view(title string) string {
 	check(err)
 	result.Body = html.EscapeString(result.Body)
 	result.Body = string(blackfriday.MarkdownCommon([]byte(result.Body)))
-	return viewtpl.Render(result)
+	viewtpl.Execute(w, result)
 }
 
-var createtpl, createtplerr = mustache.ParseFile("create.html")
+var createtpl = template.New("create.html")
 
-func getPage(session *mgo.Session, title string) (result *Page, err os.Error) {
+func getPage(session *mgo.Session, title string) (result *Page, err error) {
 	result = new(Page)
 	c := session.DB(dbname).C("pages")
 	err = c.Find(bson.M{"title": title}).One(result)
 	return
 }
-
-func edit(title string) string {
-	session, err := mgo.Mongo(server)
-	check(err)
-	defer session.Close()
-	result, err := getPage(session, title)
-	if err == mgo.NotFound {
-		result.Title = title
-	} else {
-		check(err)
+func matchUrl(pat, against string) (title string) {
+	r := regexp.MustCompile(pat + "$")
+	title = "index"
+	if x := r.FindStringSubmatch(against); x != nil {
+		title = x[1]
 	}
-	return createtpl.Render(result)
+	return
 }
-func create(c *web.Context, title string) {
-	if title != c.Params["title"] {
-		panic("Invalid params")
-	}
+func edit(w http.ResponseWriter, c *http.Request) {
+	title := matchUrl(c.URL.Path, "/(\\w+)")
 	session, err := mgo.Mongo(server)
-	defer session.Close()
 	check(err)
+	defer session.Close()
 	result, err := getPage(session, title)
 	if err == mgo.NotFound {
 		result.Title = title
 	} else {
 		check(err)
 	}
-	res := &Page{Title: title, Body: c.Params["body"]}
-	db := session.DB(dbname).C("pages")
-	db.Upsert(result, res)
-	c.Redirect(302, "/view/"+title)
+	createtpl.Execute(w, result)
 }
 func main() {
-	check(viewtplerr)
-	check(createtplerr)
 	s := os.Args[2]
 	x, err := url.Parse(s)
 	check(err)
 	dbname = x.Path[1:]
 	server = s
-	web.Get("/view/([a-zA-Z]*)", view)
-	web.Get("/edit/([a-zA-Z]*)", edit)
-	web.Get("/([a-zA-Z]*)", index)
-	web.Post("/edit/(.*)", create)
-	web.Run(":" + os.Args[1])
+	http.HandleFunc("/view/", view)
+	http.HandleFunc("/edit/", edit)
+	http.HandleFunc("/)", index)
+	http.ListenAndServe(":"+os.Args[1], nil)
 }
