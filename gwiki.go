@@ -10,12 +10,16 @@ import (
 	"os"
 	"url"
 )
+
 var dbname = "gwiki"
 var server = "localhost"
 var viewtpl, viewtplerr = mustache.ParseFile("view.html")
 
-func index() string {
-	return view("index")
+func index(page string) string {
+	if page == "" {
+		page = "index"
+	}
+	return view(page)
 }
 
 type Page struct {
@@ -85,7 +89,7 @@ func main() {
 	check(err)
 	dbname = x.Path[1:]
 	server = s
-	web.Get("/", index)
+	web.Get("/(.*)", index)
 	web.Get("/view/(.*)", view)
 	web.Get("/edit/(.*)", edit)
 	web.Post("/edit/(.*)", create)
