@@ -84,7 +84,7 @@ func main() {
 	x, err := url.Parse(s)
 	check(err)
 	dbname = x.Path[1:]
-	server = x.Host
+	server = s
 	web.Get("/", index)
 	web.Get("/view/(.*)", view)
 	web.Get("/edit/(.*)", edit)
