@@ -88,13 +88,13 @@ func edit(w http.ResponseWriter, c *http.Request) {
 		page := new(Page)
 		page.Title = title
 		page.Body = c.FormValue("body")
+		ctx := session.DB(dbname).C("pages")
 		if err == mgo.NotFound {
-			ctx := session.DB(dbname).C("pages")
 			err := ctx.Insert(page)
 			check(err)
 		} else {
 			check(err)
-			err := ctx.Upsert(result, page)
+			_, err := ctx.Upsert(result, page)
 			check(err)
 		}
 		http.Redirect(w, c, "/view/"+title, 302)
