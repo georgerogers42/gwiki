@@ -92,6 +92,6 @@ func main() {
 	server = s
 	http.HandleFunc("/view/", view)
 	http.HandleFunc("/edit/", edit)
-	http.HandleFunc("/)", index)
+	http.HandleFunc("/", index)
 	http.ListenAndServe(":"+os.Args[1], nil)
 }
