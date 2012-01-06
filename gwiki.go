@@ -91,7 +91,7 @@ func main() {
 	dbname = x.Path[1:]
 	server = s
 	web.Get("/view/([a-zA-Z]*)", view)
-	web.Get("/edit/([a-zA-Z*)", edit)
+	web.Get("/edit/([a-zA-Z*])", edit)
 	web.Get("/([a-zA-Z]*)", index)
 	web.Post("/edit/(.*)", create)
 	web.Run(":" + os.Args[1])
