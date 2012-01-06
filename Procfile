@@ -1,1 +1,1 @@
-web: ./gwiki $PORT $MONGOHQ_URL
+web: GOMAXPROCS=3 ./gwiki $PORT $MONGOHQ_URL
