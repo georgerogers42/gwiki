@@ -2,12 +2,12 @@
 <!doctype html>
 <html>
   <head>
-    <title>{{Title}}</title>
+    <title>{{.Title}}</title>
   </head>
   <body>
     <form method="POST">
-      Title <input type="text" name="title" value="{{Title}}"><p>
-      Body<br><textarea name="body" rows=24 cols=80>{{Body}}</textarea><p>
+      Title <input type="text" name="title" value="{{.Title}}"><p>
+      Body<br><textarea name="body" rows=24 cols=80>{{.Body}}</textarea><p>
       <input type="submit">
     </form>
   </body>

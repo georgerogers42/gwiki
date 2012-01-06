@@ -3,18 +3,18 @@ package main
 import (
 	"github.com/russross/blackfriday"
 	"html"
-	"html/template"
 	"launchpad.net/gobson/bson"
 	"launchpad.net/mgo"
 	"net/http"
 	"net/url"
 	"os"
 	"regexp"
+	"text/template"
 )
 
 var dbname = "gwiki"
 var server = "localhost"
-var viewtpl = template.New("view.html")
+var viewtpl = template.Must(template.ParseFiles("view.html"))
 
 func index(w http.ResponseWriter, r *http.Request) {
 	rx := regexp.MustCompile("/(\\w+)$")
@@ -55,7 +55,7 @@ func view(w http.ResponseWriter, c *http.Request) {
 	viewtpl.Execute(w, result)
 }
 
-var createtpl = template.New("create.html")
+var createtpl = template.Must(template.ParseFiles("create.html"))
 
 func getPage(session *mgo.Session, title string) (result *Page, err error) {
 	result = new(Page)
@@ -64,7 +64,7 @@ func getPage(session *mgo.Session, title string) (result *Page, err error) {
 	return
 }
 func matchUrl(pat, against string) (title string) {
-	r := regexp.MustCompile(pat + "$")
+	r := regexp.MustCompile(pat)
 	title = "index"
 	if x := r.FindStringSubmatch(against); x != nil {
 		title = x[1]
@@ -72,17 +72,31 @@ func matchUrl(pat, against string) (title string) {
 	return
 }
 func edit(w http.ResponseWriter, c *http.Request) {
-	title := matchUrl(c.URL.Path, "/(\\w+)")
+	title := matchUrl("/edit/(\\w+)", c.URL.Path)
 	session, err := mgo.Mongo(server)
 	check(err)
 	defer session.Close()
 	result, err := getPage(session, title)
-	if err == mgo.NotFound {
-		result.Title = title
-	} else {
-		check(err)
+	if c.Method == "GET" {
+		if err == mgo.NotFound {
+			result.Title = title
+		} else {
+			check(err)
+		}
+		createtpl.Execute(w, result)
+	} else if c.Method == "POST" {
+		if err == mgo.NotFound {
+			ctx := session.DB(dbname).C("pages")
+			page := new(Page)
+			page.Title = title
+			page.Body = c.FormValue("body")
+			err := ctx.Insert(page)
+			check(err)
+		} else {
+			check(err)
+		}
+		http.Redirect(w, c, "/view/"+title, 302)
 	}
-	createtpl.Execute(w, result)
 }
 func main() {
 	s := os.Args[2]
