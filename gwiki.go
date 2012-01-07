@@ -27,7 +27,7 @@ func check(e error) {
 	}
 }
 
-func view(w http.ResponseWriter, c *http.Request, path []string) {
+func view(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string) {
 	title := path[0]
 	session, err := mgo.Mongo(server)
 	check(err)
@@ -43,24 +43,22 @@ func view(w http.ResponseWriter, c *http.Request, path []string) {
 
 var createtpl = template.Must(template.ParseFiles("create.html"))
 
-func route(w http.ResponseWriter, c *http.Request) {
-	switch {
-	case goweb.Route("/edit/(\\w+)", w, c, edit):
-	case goweb.Route("/view/(\\w+)", w, c, view):
-	case goweb.Route("/(\\w+)", w, c, view):
-	case goweb.Route("/", w, c, index):
-	}
-}
+var route = goweb.Or(
+	goweb.Route(`/edit/(\w+)`, edit),
+	goweb.Route(`/view/(\w+)`, view),
+	goweb.Route(`/(\w+)`, view),
+	goweb.Route(`/`, index))
+
 func getPage(session *mgo.Session, title string) (result *Page, err error) {
 	result = new(Page)
 	c := session.DB(dbname).C("pages")
 	err = c.Find(bson.M{"title": title}).One(result)
 	return
 }
-func index(w http.ResponseWriter, c *http.Request, path []string) {
-  http.Redirect(w, c, "/index", 302);
+func index(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string) {
+	http.Redirect(w, c, "/index", 302)
 }
-func edit(w http.ResponseWriter, c *http.Request, path []string) {
+func edit(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string) {
 	title := path[0]
 	session, err := mgo.Mongo(server)
 	check(err)
@@ -89,11 +87,15 @@ func edit(w http.ResponseWriter, c *http.Request, path []string) {
 		http.Redirect(w, c, "/view/"+title, 302)
 	}
 }
+func handler(w http.ResponseWriter, c *http.Request) {
+	s := goweb.Result{Final: false, State: make(map[string]goweb.Any)}
+	route(w, c, s)
+}
 func main() {
 	s := os.Args[2]
 	x, err := url.Parse(s)
 	check(err)
 	dbname = x.Path[1:]
 	server = s
-	http.ListenAndServe(":"+os.Args[1], http.HandlerFunc(route))
+	http.ListenAndServe(":"+os.Args[1], http.HandlerFunc(handler))
 }
