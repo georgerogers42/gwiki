@@ -2,13 +2,13 @@ package main
 
 import (
 	"github.com/russross/blackfriday"
+	"goweb"
 	"html"
 	"launchpad.net/gobson/bson"
 	"launchpad.net/mgo"
 	"net/http"
 	"net/url"
 	"os"
-	"regexp"
 	"text/template"
 )
 
@@ -27,7 +27,8 @@ func check(e error) {
 	}
 }
 
-func view(w http.ResponseWriter, c *http.Request, title string) {
+func view(w http.ResponseWriter, c *http.Request, path []string) {
+	title := path[0]
 	session, err := mgo.Mongo(server)
 	check(err)
 	defer session.Close()
@@ -43,12 +44,11 @@ func view(w http.ResponseWriter, c *http.Request, title string) {
 var createtpl = template.Must(template.ParseFiles("create.html"))
 
 func route(w http.ResponseWriter, c *http.Request) {
-	if title := matchUrl("/edit/(\\w+)", c.URL.Path); title != nil {
-		edit(w, c, *title)
-	} else if title := matchUrl("/view/(\\w+)", c.URL.Path); title != nil {
-		view(w, c, *title)
-	} else if title := matchUrl("/(\\w+)", c.URL.Path); title != nil {
-		view(w, c, *title)
+	switch {
+	case goweb.Route("/edit/(\\w+)", w, c, edit):
+	case goweb.Route("/view/(\\w+)", w, c, view):
+	case goweb.Route("/(\\w+)", w, c, view):
+	case goweb.Route("/", w, c, index):
 	}
 }
 func getPage(session *mgo.Session, title string) (result *Page, err error) {
@@ -57,15 +57,11 @@ func getPage(session *mgo.Session, title string) (result *Page, err error) {
 	err = c.Find(bson.M{"title": title}).One(result)
 	return
 }
-func matchUrl(pat, against string) (title *string) {
-	r := regexp.MustCompile(pat)
-	if x := r.FindStringSubmatch(against); x != nil {
-		title = new(string)
-		*title = x[1]
-	}
-	return
+func index(w http.ResponseWriter, c *http.Request, path []string) {
+  http.Redirect(w, c, "/index", 302);
 }
-func edit(w http.ResponseWriter, c *http.Request, title string) {
+func edit(w http.ResponseWriter, c *http.Request, path []string) {
+	title := path[0]
 	session, err := mgo.Mongo(server)
 	check(err)
 	defer session.Close()
