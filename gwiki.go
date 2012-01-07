@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/russross/blackfriday"
-	"goweb"
+	"github.com/georgerogers42/goweb"
 	"html"
 	"launchpad.net/gobson/bson"
 	"launchpad.net/mgo"
