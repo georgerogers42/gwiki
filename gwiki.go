@@ -16,18 +16,6 @@ var dbname = "gwiki"
 var server = "localhost"
 var viewtpl = template.Must(template.ParseFiles("view.html"))
 
-func index(w http.ResponseWriter, r *http.Request) {
-	rx := regexp.MustCompile("/(\\w+)$")
-	page := "index"
-	if x := rx.FindStringSubmatch(r.URL.Path); x != nil {
-		page = x[1]
-	}
-	if page == "" {
-		page = "index"
-	}
-	http.Redirect(w, r, "/view/"+page, 302)
-}
-
 type Page struct {
 	Title string
 	Body  string
@@ -39,17 +27,14 @@ func check(e error) {
 	}
 }
 
-func view(w http.ResponseWriter, c *http.Request) {
-	r := regexp.MustCompile("/(\\w+)$")
-	title := "index"
-	if x := r.FindStringSubmatch(c.URL.Path); x != nil {
-		title = x[1]
-	}
+func view(w http.ResponseWriter, c *http.Request, title string) {
 	session, err := mgo.Mongo(server)
 	check(err)
 	defer session.Close()
 	result, err := getPage(session, title)
-	check(err)
+	if err == mgo.NotFound {
+		http.Redirect(w, c, "/edit/"+title, 302)
+	}
 	result.Body = html.EscapeString(result.Body)
 	result.Body = string(blackfriday.MarkdownCommon([]byte(result.Body)))
 	viewtpl.Execute(w, result)
@@ -57,22 +42,30 @@ func view(w http.ResponseWriter, c *http.Request) {
 
 var createtpl = template.Must(template.ParseFiles("create.html"))
 
+func route(w http.ResponseWriter, c *http.Request) {
+	if title := matchUrl("/edit/(\\w+)", c.URL.Path); title != nil {
+		edit(w, c, *title)
+	} else if title := matchUrl("/view/(\\w+)", c.URL.Path); title != nil {
+		view(w, c, *title)
+	} else if title := matchUrl("/(\\w+)", c.URL.Path); title != nil {
+		view(w, c, *title)
+	}
+}
 func getPage(session *mgo.Session, title string) (result *Page, err error) {
 	result = new(Page)
 	c := session.DB(dbname).C("pages")
 	err = c.Find(bson.M{"title": title}).One(result)
 	return
 }
-func matchUrl(pat, against string) (title string) {
+func matchUrl(pat, against string) (title *string) {
 	r := regexp.MustCompile(pat)
-	title = "index"
 	if x := r.FindStringSubmatch(against); x != nil {
-		title = x[1]
+		title = new(string)
+		*title = x[1]
 	}
 	return
 }
-func edit(w http.ResponseWriter, c *http.Request) {
-	title := matchUrl("/edit/(\\w+)", c.URL.Path)
+func edit(w http.ResponseWriter, c *http.Request, title string) {
 	session, err := mgo.Mongo(server)
 	check(err)
 	defer session.Close()
@@ -106,8 +99,5 @@ func main() {
 	check(err)
 	dbname = x.Path[1:]
 	server = s
-	http.HandleFunc("/view/", view)
-	http.HandleFunc("/edit/", edit)
-	http.HandleFunc("/", index)
-	http.ListenAndServe(":"+os.Args[1], nil)
+	http.ListenAndServe(":"+os.Args[1], http.HandlerFunc(route))
 }
