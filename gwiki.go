@@ -87,10 +87,7 @@ func edit(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string
 		http.Redirect(w, c, "/view/"+title, 302)
 	}
 }
-func handler(w http.ResponseWriter, c *http.Request) {
-	s := goweb.Result{Final: false, State: make(map[string]goweb.Any)}
-	route(w, c, s)
-}
+var handler = goweb.Handler(route)
 func main() {
 	s := os.Args[2]
 	x, err := url.Parse(s)
