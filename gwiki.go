@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/russross/blackfriday"
+	"github.com/georgerogers42/gologin"
 	"github.com/georgerogers42/goweb"
+	"github.com/russross/blackfriday"
 	"html"
 	"launchpad.net/gobson/bson"
 	"launchpad.net/mgo"
@@ -27,7 +28,7 @@ func check(e error) {
 	}
 }
 
-func view(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string) {
+func view(w http.ResponseWriter, c *http.Request, s goweb.Result, path ...string) goweb.Result {
 	title := path[0]
 	session, err := mgo.Mongo(server)
 	check(err)
@@ -39,12 +40,14 @@ func view(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string
 	result.Body = html.EscapeString(result.Body)
 	result.Body = string(blackfriday.MarkdownCommon([]byte(result.Body)))
 	viewtpl.Execute(w, result)
+	return s
 }
 
 var createtpl = template.Must(template.ParseFiles("create.html"))
-
+var x = "users"
+var _, _ = gologin.FromConfig("userpass:anonimous:coward")
 var route = goweb.Or(
-	goweb.Route(`/edit/(\w+)`, edit),
+	goweb.Route(`/edit/(\w+)`, gologin.RequireAuth(edit)),
 	goweb.Route(`/view/(\w+)`, view),
 	goweb.Route(`/(\w+)`, view),
 	goweb.Route(`/`, index))
@@ -55,10 +58,11 @@ func getPage(session *mgo.Session, title string) (result *Page, err error) {
 	err = c.Find(bson.M{"title": title}).One(result)
 	return
 }
-func index(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string) {
+func index(w http.ResponseWriter, c *http.Request, s goweb.Result, path ...string) goweb.Result {
 	http.Redirect(w, c, "/index", 302)
+	return s
 }
-func edit(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string) {
+func edit(w http.ResponseWriter, c *http.Request, s goweb.Result, path ...string) goweb.Result {
 	title := path[0]
 	session, err := mgo.Mongo(server)
 	check(err)
@@ -86,8 +90,11 @@ func edit(w http.ResponseWriter, c *http.Request, s *goweb.Result, path []string
 		}
 		http.Redirect(w, c, "/view/"+title, 302)
 	}
+	return s
 }
+
 var handler = goweb.Handler(route)
+
 func main() {
 	s := os.Args[2]
 	x, err := url.Parse(s)
